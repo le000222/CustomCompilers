@@ -71,26 +71,43 @@
 *************************************************************
 */
 
-ReaderPointer readerCreate(rid_int size, rid_int increment, rid_int mode) {
-	ReaderPointer readerPointer;
+ReaderPointer readerCreate(boa_intg size, boa_intg increment, boa_intg mode) {
+	ReaderPointer readerPointer = NULL;
 	/* TO_DO: Defensive programming */
-	if (size == 0 || increment == 0 || mode == 0) {
-		return NULL;
+	//mode = tolower(mode);
+
+	if ( (size < 0) || (increment < 0) ) {
+		return readerPointer;
 	}
 	/* TO_DO: Adjust the values according to parameters */
-	if (size < 0  || increment < 0 || mode)
-	size = READER_DEFAULT_SIZE;
-	increment = READER_DEFAULT_INCREMENT;
-	mode = MODE_FIXED;
+	if (size == 0) {
+		readerPointer->size = READER_DEFAULT_SIZE;
+	}
+	if (increment == 0) {
+		if(increment)
+		if (mode == 'f')
+		{
+			readerPointer->increment = 0;
+		}
+		if ((mode == 'a') || (mode == 'm')) {
+			readerPointer->increment = READER_DEFAULT_INCREMENT;
+		}
+	}
 	readerPointer = (ReaderPointer)calloc(1, sizeof(BufferReader));
 	/* TO_DO: Defensive programming */
-	readerPointer->content = (rid_char*)malloc(size);
+	if (readerPointer == NULL) {
+		/* failed to allocate memory */
+		return readerPointer;
+	}
+	readerPointer->content = (boa_char*)malloc(size);
 	/* TO_DO: Defensive programming */
 	/* TO_DO: Initialize the histogram */
+	readerPointer->histogram[0] = '\0';  /*????*/
 	readerPointer->size = size;
 	readerPointer->increment = increment;
 	readerPointer->mode = mode;
 	/* TO_DO: Initialize flags */
+	readerPointer->flags = READER_DEFAULT_FLAG;
 	/* TO_DO: The created flag must be signalized as EMP */
 	return readerPointer;
 }
@@ -112,14 +129,15 @@ ReaderPointer readerCreate(rid_int size, rid_int increment, rid_int mode) {
 *************************************************************
 */
 
-ReaderPointer readerAddChar(ReaderPointer const readerPointer, rid_char ch) {
-	rid_char* tempReader = NULL;
-	rid_int newSize = 0;
+ReaderPointer readerAddChar(ReaderPointer const readerPointer, boa_char ch) {
+	boa_char* tempReader = NULL;
+	boa_intg newSize = 0;
 	/* TO_DO: Defensive programming */
 	/* TO_DO: Reset Realocation */
 	/* TO_DO: Test the inclusion of chars */
-	if (readerPointer->position.wrte * (rid_int)sizeof(rid_char) < readerPointer->size) {
+	if (readerPointer->position.wrte * (boa_intg)sizeof(boa_char) < readerPointer->size) {
 		/* TO_DO: This buffer is NOT full */
+		return readerPointer;
 	} else {
 		/* TO_DO: Reset Full flag */
 		switch (readerPointer->mode) {
@@ -127,18 +145,25 @@ ReaderPointer readerAddChar(ReaderPointer const readerPointer, rid_char ch) {
 			return NULL;
 		case MODE_ADDIT:
 			/* TO_DO: Adjust new size */
+			readerPointer->size = readerPointer->size + readerPointer->increment;
 			/* TO_DO: Defensive programming */
 			break;
 		case MODE_MULTI:
 			/* TO_DO: Adjust new size */
+			readerPointer->size = readerPointer->size * readerPointer->increment;
 			/* TO_DO: Defensive programming */
 			break;
 		default:
 			return NULL;
 		}
 		/* TO_DO: New reader allocation */
+		tempReader = ReaderPointer;
 		/* TO_DO: Defensive programming */
+		if (tempReader == NULL) {
+			return tempReader;
+		}
 		/* TO_DO: Check Relocation */
+		}
 	}
 	/* TO_DO: Add the char */
 	readerPointer->content[readerPointer->position.wrte++] = ch;
@@ -160,10 +185,15 @@ ReaderPointer readerAddChar(ReaderPointer const readerPointer, rid_char ch) {
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-rid_boln readerClear(ReaderPointer const readerPointer) {
+boa_boln readerClear(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
+	if (readerPointer == NULL) {
+		return BOA_FALSE;
+	}
 	/* TO_DO: Adjust flags original */
-	return RID_TRUE;
+	readerPointer->position;
+	readerPointer->flags = READER_DEFAULT_FLAG;
+	return BOA_TRUE;
 }
 
 /*
@@ -180,12 +210,14 @@ rid_boln readerClear(ReaderPointer const readerPointer) {
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-rid_boln readerFree(ReaderPointer const readerPointer) {
+boa_boln readerFree(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
 	if (!readerPointer)
-		return RID_FALSE;
+		return BOA_FALSE;
 	/* TO_DO: Free pointers */
-	return RID_TRUE;
+	free(readerPointer->content);
+	free(readerPointer);
+	return BOA_TRUE;
 }
 
 /*
@@ -202,10 +234,16 @@ rid_boln readerFree(ReaderPointer const readerPointer) {
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-rid_boln readerIsFull(ReaderPointer const readerPointer) {
+boa_boln readerIsFull(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
+	if (readerPointer == NULL) {
+		return BOA_TRUE;
+	}
 	/* TO_DO: Check flag if buffer is FUL */
-	return RID_FALSE;
+	if (readerPointer->size == READER_FULL_FLAG) {
+		return BOA_TRUE;
+	}
+	return BOA_FALSE;
 }
 
 
@@ -223,10 +261,13 @@ rid_boln readerIsFull(ReaderPointer const readerPointer) {
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-rid_boln readerIsEmpty(ReaderPointer const readerPointer) {
+boa_boln readerIsEmpty(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
+	if (readerPointer == NULL) {
+		return BOA_TRUE;
+	}
 	/* TO_DO: Check flag if buffer is EMP */
-	return RID_FALSE;
+	return BOA_FALSE;
 }
 
 /*
@@ -244,13 +285,13 @@ rid_boln readerIsEmpty(ReaderPointer const readerPointer) {
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-rid_boln readerSetMark(ReaderPointer const readerPointer, rid_int mark) {
+boa_boln readerSetMark(ReaderPointer const readerPointer, boa_intg mark) {
 	/* TO_DO: Defensive programming */
 	if (!readerPointer || mark<0 || mark > readerPointer->position.wrte)
-		return RID_FALSE;
+		return BOA_FALSE;
 	/* TO_DO: Adjust mark */
 	readerPointer->position.mark = mark;
-	return RID_TRUE;
+	return BOA_TRUE;
 }
 
 
@@ -268,9 +309,9 @@ rid_boln readerSetMark(ReaderPointer const readerPointer, rid_int mark) {
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-rid_int readerPrint(ReaderPointer const readerPointer) {
-	rid_int cont = 0;
-	rid_char c;
+boa_intg readerPrint(ReaderPointer const readerPointer) {
+	boa_intg cont = 0;
+	boa_char c;
 	/* TO_DO: Defensive programming (including invalid chars) */
 	c = readerGetChar(readerPointer);
 	/* TO_DO: Check flag if buffer EOB has achieved */
@@ -298,11 +339,11 @@ rid_int readerPrint(ReaderPointer const readerPointer) {
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-rid_int readerLoad(ReaderPointer const readerPointer, FILE* const fileDescriptor) {
-	rid_int size = 0;
-	rid_char c;
+boa_intg readerLoad(ReaderPointer const readerPointer, FILE* const fileDescriptor) {
+	boa_intg size = 0;
+	boa_char c;
 	/* TO_DO: Defensive programming */
-	c = (rid_char)fgetc(fileDescriptor);
+	c = (boa_char)fgetc(fileDescriptor);
 	while (!feof(fileDescriptor)) {
 		if (!readerAddChar(readerPointer, c)) {
 			ungetc(c, fileDescriptor);
@@ -330,10 +371,10 @@ rid_int readerLoad(ReaderPointer const readerPointer, FILE* const fileDescriptor
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-rid_boln readerRecover(ReaderPointer const readerPointer) {
+boa_boln readerRecover(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
 	/* TO_DO: Recover positions */
-	return RID_TRUE;
+	return BOA_TRUE;
 }
 
 
@@ -351,10 +392,10 @@ rid_boln readerRecover(ReaderPointer const readerPointer) {
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-rid_boln readerRetract(ReaderPointer const readerPointer) {
+boa_boln readerRetract(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
 	/* TO_DO: Retract (return 1 pos read) */
-	return RID_TRUE;
+	return BOA_TRUE;
 }
 
 
@@ -372,10 +413,10 @@ rid_boln readerRetract(ReaderPointer const readerPointer) {
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-rid_boln readerRestore(ReaderPointer const readerPointer) {
+boa_boln readerRestore(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
 	/* TO_DO: Restore positions (read/mark) */
-	return RID_TRUE;
+	return BOA_TRUE;
 }
 
 
@@ -394,7 +435,7 @@ rid_boln readerRestore(ReaderPointer const readerPointer) {
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-rid_char readerGetChar(ReaderPointer const readerPointer) {
+boa_char readerGetChar(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
 	/* TO_DO: Check condition to read/wrte */
 	/* TO_DO: Set EOB flag */
@@ -418,7 +459,7 @@ rid_char readerGetChar(ReaderPointer const readerPointer) {
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-rid_char* readerGetContent(ReaderPointer const readerPointer, rid_int pos) {
+boa_char* readerGetContent(ReaderPointer const readerPointer, boa_intg pos) {
 	/* TO_DO: Defensive programming */
 	/* TO_DO: Return content (string) */
 	return NULL;
@@ -440,7 +481,7 @@ rid_char* readerGetContent(ReaderPointer const readerPointer, rid_int pos) {
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-rid_int readerGetPosRead(ReaderPointer const readerPointer) {
+boa_intg readerGetPosRead(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
 	/* TO_DO: Return read */
 	return 0;
@@ -461,10 +502,13 @@ rid_int readerGetPosRead(ReaderPointer const readerPointer) {
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-rid_int readerGetPosWrte(ReaderPointer const readerPointer) {
+boa_intg readerGetPosWrte(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
+	if (readerPointer == NULL) {
+		return READER_ERROR;
+	}
 	/* TO_DO: Return wrte */
-	return 0;
+	return readerPointer->position.wrte;
 }
 
 
@@ -482,10 +526,13 @@ rid_int readerGetPosWrte(ReaderPointer const readerPointer) {
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-rid_int readerGetPosMark(ReaderPointer const readerPointer) {
+boa_intg readerGetPosMark(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
+	if (readerPointer == NULL) {
+		return READER_ERROR;
+	}
 	/* TO_DO: Return mark */
-	return 0;
+	return readerPointer->position.mark;
 }
 
 
@@ -503,10 +550,13 @@ rid_int readerGetPosMark(ReaderPointer const readerPointer) {
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-rid_int readerGetSize(ReaderPointer const readerPointer) {
+boa_intg readerGetSize(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
+	if (readerPointer == NULL) {
+		return READER_ERROR;
+	}
 	/* TO_DO: Return size */
-	return 0;
+	return readerPointer->size;
 }
 
 /*
@@ -523,10 +573,13 @@ rid_int readerGetSize(ReaderPointer const readerPointer) {
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-rid_int readerGetInc(ReaderPointer const readerPointer) {
+boa_intg readerGetInc(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
+	if (readerPointer == NULL) {
+		return READER_ERROR;
+	}
 	/* TO_DO: Return increment */
-	return 0;
+	return readerPointer->increment;
 }
 
 /*
@@ -543,10 +596,13 @@ rid_int readerGetInc(ReaderPointer const readerPointer) {
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-rid_int readerGetMode(ReaderPointer const readerPointer) {
+boa_intg readerGetMode(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
+	if (readerPointer == NULL) {
+		return READER_ERROR;
+	}
 	/* TO_DO: Return mode */
-	return 0;
+	return readerPointer->mode;
 }
 
 
@@ -564,10 +620,14 @@ rid_int readerGetMode(ReaderPointer const readerPointer) {
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-rid_byte readerGetFlags(ReaderPointer const readerPointer) {
+boa_byte readerGetFlags(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
+	if (readerPointer == NULL) {
+		return READER_ERROR;
+	} /* we have to check against the bitmask????? */
+
 	/* TO_DO: Return flags */
-	return 0;
+	return readerPointer->flags;
 }
 
 
@@ -585,8 +645,11 @@ rid_byte readerGetFlags(ReaderPointer const readerPointer) {
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-rid_int readerShowStat(ReaderPointer const readerPointer) {
+boa_intg readerShowStat(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
-	/* TO_DO: Updates the histogram */
+	if (readerPointer == NULL) {
+		return READER_ERROR;
+	}
+	/* TO_DO: Updates the histogram    ??????    */ 
 	return 0;
 }
