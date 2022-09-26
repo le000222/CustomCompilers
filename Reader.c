@@ -81,16 +81,16 @@ ReaderPointer readerCreate(rid_int size, rid_int increment, rid_int mode) {
 	}
 	/* TO_DO: Adjust the values according to parameters */
 	if (size == 0) {
-		readerPointer->size = READER_DEFAULT_SIZE;
+		size = READER_DEFAULT_SIZE;
 	}
 	if (increment == 0) {
 		if(increment)
 		if (mode == 'f')
 		{
-			readerPointer->increment = 0;
+			increment = 0;
 		}
 		if ((mode == 'a') || (mode == 'm')) {
-			readerPointer->increment = READER_DEFAULT_INCREMENT;
+			increment = READER_DEFAULT_INCREMENT;
 		}
 	}
 	readerPointer = (ReaderPointer)calloc(1, sizeof(BufferReader));
@@ -102,7 +102,9 @@ ReaderPointer readerCreate(rid_int size, rid_int increment, rid_int mode) {
 	readerPointer->content = (rid_char*)malloc(size);
 	/* TO_DO: Defensive programming */
 	/* TO_DO: Initialize the histogram */
-	readerPointer->histogram[0] = '\0';  /*????*/
+	for (rid_int counter = 0; counter < NCHAR; counter++) {
+		readerPointer->histogram[counter] = 0;
+	}
 	readerPointer->size = size;
 	readerPointer->increment = increment;
 	readerPointer->mode = mode;
@@ -134,9 +136,13 @@ ReaderPointer readerAddChar(ReaderPointer const readerPointer, rid_char ch) {
 	rid_char* tempReader = NULL;
 	rid_int newSize = 0;
 	/* TO_DO: Defensive programming */
-	if (!readerPointer && !ch) {
+	if (!readerPointer && (ch < 0 || ch > 127)) {
 		return NULL;
 	}
+	else if (ch > 0 && ch < 31) {
+		/* print something printable but not in the system of ASCII */
+	}
+	
 	/* TO_DO: Reset Realocation */
 	readerPointer->flags &= READER_RST_REL;
 	/* TO_DO: Test the inclusion of chars */
@@ -153,36 +159,38 @@ ReaderPointer readerAddChar(ReaderPointer const readerPointer, rid_char ch) {
 			/* TO_DO: Adjust new size */
 			newSize = readerPointer->size + readerPointer->increment;
 			/* TO_DO: Defensive programming */
-			if (newSize < READER_MAX_SIZE) {
-				returnn NULL;
+			if (newSize < 0) {
+				return NULL;
 			}
 			break;
 		case MODE_MULTI:
 			/* TO_DO: Adjust new size */
 			newSize = readerPointer->size * readerPointer->increment;
 			/* TO_DO: Defensive programming */
-			if (newSize < READER_MAX_SIZE) {
-				returnn NULL;
+			if (newSize < 0) {
+				return NULL;
 			}
 			break;
 		default:
 			return NULL;
 		}
 		/* TO_DO: New reader allocation */
-		tempReader = readerPointer;
+		tempReader = realloc(readerPointer->content, newSize);
 		/* TO_DO: Defensive programming */
-		if (tempReader == NULL) {
-			return tempReader;
+		if (!tempReader) {
+			return NULL;
 		}
 		/* TO_DO: Check Relocation */
-		if (readerPointer->flags & READER_CHK_REL == READER_SET_REL) {
-			readerPointer->content = (rid_char*)realloc(readerPointer->size, newSize);
-			tempReader = realloc(readerPointer->size, newSize);
+		if (tempReader != readerPointer->content) {
+			readerPointer->flags |= READER_SET_REL; /* set bits for realocation */
 		}
+		readerPointer->content = tempReader;
+		readerPointer->size = newSize;
 	}
 	/* TO_DO: Add the char */
 	readerPointer->content[readerPointer->position.wrte++] = ch;
 	/* TO_DO: Updates histogram */
+	if (readerPointer->histogram[ch]++);
 	return readerPointer;
 }
 
@@ -253,7 +261,7 @@ rid_boln readerIsFull(ReaderPointer const readerPointer) {
 	if (!readerPointer)
 		return RID_FALSE;
 	/* TO_DO: Check flag if buffer is FUL */
-	if (readerPointer->flags & READER_CHK_FULL == READER_SET_FULL) {
+	if (readerPointer->flags & READER_CHK_FULL) {
 		return RID_TRUE;
 	}
 	return RID_FALSE;
@@ -279,7 +287,7 @@ rid_boln readerIsEmpty(ReaderPointer const readerPointer) {
 	if (!readerPointer)
 		return RID_FALSE;
 	/* TO_DO: Check flag if buffer is EMP */
-	if (readerPointer->flags & READER_CHK_EMP == READER_SET_EMP) {
+	if (readerPointer->flags & READER_CHK_EMP) {
 		return RID_TRUE;
 	}
 	return RID_FALSE;
@@ -690,4 +698,17 @@ rid_int readerShowStat(ReaderPointer const readerPointer) {
 	}
 	/* TO_DO: Updates the histogram    ??????    */ 
 	return 0;
+}
+
+rid_void readerPrintHistogram(ReaderPointer const readerPointer) {
+	rid_int counter = 0;
+	rid_int numChars = 0;
+	rid_char ch = '\0';
+	for (counter = 0; counter < NCHAR; counter++) {
+		numChars = readerPointer->histogram[counter];
+		if (numChars > 0) {
+			ch = readerPointer->content[counter];
+			printf("%s%d%s%d%s", "Reader[", ch, "]=", numChars, "\n");
+		}
+	}
 }

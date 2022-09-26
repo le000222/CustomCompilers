@@ -1,0 +1,10 @@
+# ninja log v5
+0	506	6858973778751800	CMakeFiles/RidCompiler.dir/Compilers.c.obj	abd8f066c1b3fcf7
+7	509	6858973778751800	CMakeFiles/RidCompiler.dir/Reader.c.obj	97ca0bbace8c0a40
+4	510	6858973778751800	CMakeFiles/RidCompiler.dir/MainReader.c.obj	fd6da047cae01037
+0	446	6858993907768288	CMakeFiles/RidCompiler.dir/Reader.c.obj	97ca0bbace8c0a40
+0	54	6858994070768340	CMakeFiles/RidCompiler.dir/Reader.c.obj	97ca0bbace8c0a40
+54	404	6858994074084497	RidCompiler.exe	46653204cf25f065
+3	335	6859249337457525	CMakeFiles/RidCompiler.dir/Reader.c.obj	97ca0bbace8c0a40
+0	338	6859249337474153	CMakeFiles/RidCompiler.dir/MainReader.c.obj	fd6da047cae01037
+338	592	6859249338743813	RidCompiler.exe	46653204cf25f065

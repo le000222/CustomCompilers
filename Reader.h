@@ -88,15 +88,15 @@ enum READER_MODE {
 /* TO_DO: BIT 2: EMP: Empty */
 #define READER_SET_EMP		0x04	/* 0000.0100 */
 #define READER_CHK_EMP		0x04	/* 0000.0100 */
-#define READER_RST_EMP		0xFB	/* 1111.1011 */
+#define READER_RST_EMP		0xFC	/* 1111.1011 */
 /* TO_DO: BIT 1: REL = Relocation */
 #define READER_SET_REL		0x02	/* 0000.0010 */
 #define READER_CHK_REL		0x02	/* 0000.0010 */
-#define READER_RST_REL		0xFC	/* 1111.1101 */
+#define READER_RST_REL		0xFD	/* 1111.1101 */
 /* TO_DO: BIT 0: END = EndOfBuffer */
 #define READER_SET_END		0x01	/* 0000.0001 */
 #define READER_CHK_END		0x01	/* 0000.0001 */
-#define READER_RST_END		0xF7	/* 1111.1110 */
+#define READER_RST_END		0xFE	/* 1111.1110 */
 
 #define NCHAR				128			/* Chars from 0 to 127 */
 
