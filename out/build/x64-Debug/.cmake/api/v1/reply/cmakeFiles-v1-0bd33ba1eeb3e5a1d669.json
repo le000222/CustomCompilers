@@ -737,8 +737,8 @@
 	"kind" : "cmakeFiles",
 	"paths" : 
 	{
-		"build" : "E:/BS/8152/CompilerAssignment-A12-Code-Boa/CompilerAssignment/code/out/build/x64-Debug",
-		"source" : "E:/BS/8152/CompilerAssignment-A12-Code-Boa/CompilerAssignment/code"
+		"build" : "C:/Users/phuon/OneDrive - Algonquin College/8152-Compilers/A12/8152-Compilers/out/build/x64-Debug",
+		"source" : "C:/Users/phuon/OneDrive - Algonquin College/8152-Compilers/A12/8152-Compilers"
 	},
 	"version" : 
 	{

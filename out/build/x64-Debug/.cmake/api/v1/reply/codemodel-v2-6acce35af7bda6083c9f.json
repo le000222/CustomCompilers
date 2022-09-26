@@ -27,7 +27,7 @@
 					[
 						0
 					],
-					"name" : "BoaCompiler",
+					"name" : "RidCompiler",
 					"targetIndexes" : 
 					[
 						0
@@ -38,9 +38,9 @@
 			[
 				{
 					"directoryIndex" : 0,
-					"id" : "BoaCompiler::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-BoaCompiler-Debug-345dbe00219036e7c3cb.json",
-					"name" : "BoaCompiler",
+					"id" : "RidCompiler::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-RidCompiler-Debug-a3e92978ba6f8ec12e38.json",
+					"name" : "RidCompiler",
 					"projectIndex" : 0
 				}
 			]
@@ -49,8 +49,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "E:/BS/8152/CompilerAssignment-A12-Code-Boa/CompilerAssignment/code/out/build/x64-Debug",
-		"source" : "E:/BS/8152/CompilerAssignment-A12-Code-Boa/CompilerAssignment/code"
+		"build" : "C:/Users/phuon/OneDrive - Algonquin College/8152-Compilers/A12/8152-Compilers/out/build/x64-Debug",
+		"source" : "C:/Users/phuon/OneDrive - Algonquin College/8152-Compilers/A12/8152-Compilers"
 	},
 	"version" : 
 	{

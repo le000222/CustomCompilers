@@ -2,42 +2,6 @@
 	"entries" : 
 	[
 		{
-			"name" : "BoaCompiler_BINARY_DIR",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : "Value Computed by CMake"
-				}
-			],
-			"type" : "STATIC",
-			"value" : "E:/BS/8152/CompilerAssignment-A12-Code-Boa/CompilerAssignment/code/out/build/x64-Debug"
-		},
-		{
-			"name" : "BoaCompiler_IS_TOP_LEVEL",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : "Value Computed by CMake"
-				}
-			],
-			"type" : "STATIC",
-			"value" : "ON"
-		},
-		{
-			"name" : "BoaCompiler_SOURCE_DIR",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : "Value Computed by CMake"
-				}
-			],
-			"type" : "STATIC",
-			"value" : "E:/BS/8152/CompilerAssignment-A12-Code-Boa/CompilerAssignment/code"
-		},
-		{
 			"name" : "CMAKE_AR",
 			"properties" : 
 			[
@@ -75,7 +39,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "e:/BS/8152/CompilerAssignment-A12-Code-Boa/CompilerAssignment/code/out/build/x64-Debug"
+			"value" : "c:/Users/phuon/OneDrive - Algonquin College/8152-Compilers/A12/8152-Compilers/out/build/x64-Debug"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -551,7 +515,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "E:/BS/8152/CompilerAssignment-A12-Code-Boa/CompilerAssignment/code"
+			"value" : "C:/Users/phuon/OneDrive - Algonquin College/8152-Compilers/A12/8152-Compilers"
 		},
 		{
 			"name" : "CMAKE_INSTALL_PREFIX",
@@ -563,7 +527,7 @@
 				}
 			],
 			"type" : "PATH",
-			"value" : "E:/BS/8152/CompilerAssignment-A12-Code-Boa/CompilerAssignment/code/out/install/x64-Debug"
+			"value" : "C:/Users/phuon/OneDrive - Algonquin College/8152-Compilers/A12/8152-Compilers/out/install/x64-Debug"
 		},
 		{
 			"name" : "CMAKE_LINKER",
@@ -747,7 +711,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "BoaCompiler"
+			"value" : "RidCompiler"
 		},
 		{
 			"name" : "CMAKE_RANLIB",
@@ -1088,6 +1052,42 @@
 			],
 			"type" : "BOOL",
 			"value" : "FALSE"
+		},
+		{
+			"name" : "RidCompiler_BINARY_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Value Computed by CMake"
+				}
+			],
+			"type" : "STATIC",
+			"value" : "C:/Users/phuon/OneDrive - Algonquin College/8152-Compilers/A12/8152-Compilers/out/build/x64-Debug"
+		},
+		{
+			"name" : "RidCompiler_IS_TOP_LEVEL",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Value Computed by CMake"
+				}
+			],
+			"type" : "STATIC",
+			"value" : "ON"
+		},
+		{
+			"name" : "RidCompiler_SOURCE_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Value Computed by CMake"
+				}
+			],
+			"type" : "STATIC",
+			"value" : "C:/Users/phuon/OneDrive - Algonquin College/8152-Compilers/A12/8152-Compilers"
 		}
 	],
 	"kind" : "cache",

@@ -72,15 +72,33 @@ enum READER_MODE {
 /* CONSTANTS DEFINITION: PREFIXED BY LANGUAGE NAME (SOFIA) .................................. */
 
 /* You should add your own constant definitions here */
-#define READER_MAX_SIZE	INT_MAX-1	/* maximum capacity */ 
+#define READER_MAX_SIZE	INT_MAX		-1	/* maximum capacity */ 
 
 #define READER_DEFAULT_SIZE			250		/* default initial buffer reader capacity */
 #define READER_DEFAULT_INCREMENT	10		/* default increment factor */
 
-/* Add your bit-masks constant definitions here - Defined for BOA */
+/* Add your bit-masks constant definitions here - Defined for RID */
 /* BITS                                (7654.3210) */
+/* Whenever any of the flag is called, these bits must be set */
 #define READER_DEFAULT_FLAG 0x00 	/* (0000.0000)_2 = (000)_10 */
 /* TO_DO: BIT 3: FUL = Full */
+<<<<<<< HEAD
+#define READER_SET_FULL		0x08	/* 0000.1000 */
+#define READER_CHK_FULL		0x08	/* 0000.1000 */
+#define READER_RST_FULL		0xF7	/* 1111.0111 */
+/* TO_DO: BIT 2: EMP: Empty */
+#define READER_SET_EMP		0x04	/* 0000.0100 */
+#define READER_CHK_EMP		0x04	/* 0000.0100 */
+#define READER_RST_EMP		0xFB	/* 1111.1011 */
+/* TO_DO: BIT 1: REL = Relocation */
+#define READER_FSET_REL		0x02	/* 0000.0010 */
+#define READER_CHK_REL		0x02	/* 0000.0010 */
+#define READER_RST_REL		0xFC	/* 1111.1101 */
+/* TO_DO: BIT 0: END = EndOfBuffer */
+#define READER_SET_END		0x01	/* 0000.0001 */
+#define READER_CHK_END		0x01	/* 0000.0001 */
+#define READER_RST_END		0xF7	/* 1111.1110 */
+=======
 #define READER_FULL_FLAG 0x0100
 /* TO_DO: BIT 2: EMP: Empty */
 #define READER_EMP_FLAG 0x0001
@@ -88,6 +106,7 @@ enum READER_MODE {
 #define READER_REALOC_FLAG 0x0010
 /* TO_DO: BIT 0: END = EndOfBuffer */
 #define READER_END_FLAG 0x0000
+>>>>>>> 92207a155adb0e9e47967daf4db9c5d9f4c9de92
 
 #define NCHAR				128			/* Chars from 0 to 127 */
 

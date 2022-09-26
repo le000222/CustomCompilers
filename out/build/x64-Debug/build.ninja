@@ -11,7 +11,7 @@
 # =============================================================================
 
 # =============================================================================
-# Project: BoaCompiler
+# Project: RidCompiler
 # Configurations: Debug
 # =============================================================================
 
@@ -39,63 +39,63 @@ include CMakeFiles\rules.ninja
 #############################################
 # Logical path to working directory; prefix for absolute paths.
 
-cmake_ninja_workdir = E$:\BS\8152\CompilerAssignment-A12-Code-Boa\CompilerAssignment\code\out\build\x64-Debug\
+cmake_ninja_workdir = C$:\Users\phuon\OneDrive$ -$ Algonquin$ College\8152-Compilers\A12\8152-Compilers\out\build\x64-Debug\
 # =============================================================================
-# Object build statements for EXECUTABLE target BoaCompiler
+# Object build statements for EXECUTABLE target RidCompiler
 
 
 #############################################
-# Order-only phony target for BoaCompiler
+# Order-only phony target for RidCompiler
 
-build cmake_object_order_depends_target_BoaCompiler: phony || CMakeFiles\BoaCompiler.dir
+build cmake_object_order_depends_target_RidCompiler: phony || CMakeFiles\RidCompiler.dir
 
-build CMakeFiles\BoaCompiler.dir\Compilers.c.obj: C_COMPILER__BoaCompiler_Debug E$:\BS\8152\CompilerAssignment-A12-Code-Boa\CompilerAssignment\code\Compilers.c || cmake_object_order_depends_target_BoaCompiler
+build CMakeFiles\RidCompiler.dir\Compilers.c.obj: C_COMPILER__RidCompiler_Debug C$:\Users\phuon\OneDrive$ -$ Algonquin$ College\8152-Compilers\A12\8152-Compilers\Compilers.c || cmake_object_order_depends_target_RidCompiler
   FLAGS = /DWIN32 /D_WINDOWS /W3 /MDd /Zi /Ob0 /Od /RTC1
-  OBJECT_DIR = CMakeFiles\BoaCompiler.dir
-  OBJECT_FILE_DIR = CMakeFiles\BoaCompiler.dir
-  TARGET_COMPILE_PDB = CMakeFiles\BoaCompiler.dir\
-  TARGET_PDB = BoaCompiler.pdb
+  OBJECT_DIR = CMakeFiles\RidCompiler.dir
+  OBJECT_FILE_DIR = CMakeFiles\RidCompiler.dir
+  TARGET_COMPILE_PDB = CMakeFiles\RidCompiler.dir\
+  TARGET_PDB = RidCompiler.pdb
 
-build CMakeFiles\BoaCompiler.dir\Reader.c.obj: C_COMPILER__BoaCompiler_Debug E$:\BS\8152\CompilerAssignment-A12-Code-Boa\CompilerAssignment\code\Reader.c || cmake_object_order_depends_target_BoaCompiler
+build CMakeFiles\RidCompiler.dir\Reader.c.obj: C_COMPILER__RidCompiler_Debug C$:\Users\phuon\OneDrive$ -$ Algonquin$ College\8152-Compilers\A12\8152-Compilers\Reader.c || cmake_object_order_depends_target_RidCompiler
   FLAGS = /DWIN32 /D_WINDOWS /W3 /MDd /Zi /Ob0 /Od /RTC1
-  OBJECT_DIR = CMakeFiles\BoaCompiler.dir
-  OBJECT_FILE_DIR = CMakeFiles\BoaCompiler.dir
-  TARGET_COMPILE_PDB = CMakeFiles\BoaCompiler.dir\
-  TARGET_PDB = BoaCompiler.pdb
+  OBJECT_DIR = CMakeFiles\RidCompiler.dir
+  OBJECT_FILE_DIR = CMakeFiles\RidCompiler.dir
+  TARGET_COMPILE_PDB = CMakeFiles\RidCompiler.dir\
+  TARGET_PDB = RidCompiler.pdb
 
-build CMakeFiles\BoaCompiler.dir\MainReader.c.obj: C_COMPILER__BoaCompiler_Debug E$:\BS\8152\CompilerAssignment-A12-Code-Boa\CompilerAssignment\code\MainReader.c || cmake_object_order_depends_target_BoaCompiler
+build CMakeFiles\RidCompiler.dir\MainReader.c.obj: C_COMPILER__RidCompiler_Debug C$:\Users\phuon\OneDrive$ -$ Algonquin$ College\8152-Compilers\A12\8152-Compilers\MainReader.c || cmake_object_order_depends_target_RidCompiler
   FLAGS = /DWIN32 /D_WINDOWS /W3 /MDd /Zi /Ob0 /Od /RTC1
-  OBJECT_DIR = CMakeFiles\BoaCompiler.dir
-  OBJECT_FILE_DIR = CMakeFiles\BoaCompiler.dir
-  TARGET_COMPILE_PDB = CMakeFiles\BoaCompiler.dir\
-  TARGET_PDB = BoaCompiler.pdb
+  OBJECT_DIR = CMakeFiles\RidCompiler.dir
+  OBJECT_FILE_DIR = CMakeFiles\RidCompiler.dir
+  TARGET_COMPILE_PDB = CMakeFiles\RidCompiler.dir\
+  TARGET_PDB = RidCompiler.pdb
 
 
 # =============================================================================
-# Link build statements for EXECUTABLE target BoaCompiler
+# Link build statements for EXECUTABLE target RidCompiler
 
 
 #############################################
-# Link the executable BoaCompiler.exe
+# Link the executable RidCompiler.exe
 
-build BoaCompiler.exe: C_EXECUTABLE_LINKER__BoaCompiler_Debug CMakeFiles\BoaCompiler.dir\Compilers.c.obj CMakeFiles\BoaCompiler.dir\Reader.c.obj CMakeFiles\BoaCompiler.dir\MainReader.c.obj
+build RidCompiler.exe: C_EXECUTABLE_LINKER__RidCompiler_Debug CMakeFiles\RidCompiler.dir\Compilers.c.obj CMakeFiles\RidCompiler.dir\Reader.c.obj CMakeFiles\RidCompiler.dir\MainReader.c.obj
   FLAGS = /DWIN32 /D_WINDOWS /W3 /MDd /Zi /Ob0 /Od /RTC1
   LINK_FLAGS = /machine:x64 /debug /INCREMENTAL /subsystem:console
   LINK_LIBRARIES = kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib
-  OBJECT_DIR = CMakeFiles\BoaCompiler.dir
+  OBJECT_DIR = CMakeFiles\RidCompiler.dir
   POST_BUILD = cd .
   PRE_LINK = cd .
-  TARGET_COMPILE_PDB = CMakeFiles\BoaCompiler.dir\
-  TARGET_FILE = BoaCompiler.exe
-  TARGET_IMPLIB = BoaCompiler.lib
-  TARGET_PDB = BoaCompiler.pdb
+  TARGET_COMPILE_PDB = CMakeFiles\RidCompiler.dir\
+  TARGET_FILE = RidCompiler.exe
+  TARGET_IMPLIB = RidCompiler.lib
+  TARGET_PDB = RidCompiler.pdb
 
 
 #############################################
 # Utility command for edit_cache
 
 build CMakeFiles\edit_cache.util: CUSTOM_COMMAND
-  COMMAND = cmd.exe /C "cd /D E:\BS\8152\CompilerAssignment-A12-Code-Boa\CompilerAssignment\code\out\build\x64-Debug && "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E echo "No interactive CMake dialog available.""
+  COMMAND = cmd.exe /C "cd /D "C:\Users\phuon\OneDrive - Algonquin College\8152-Compilers\A12\8152-Compilers\out\build\x64-Debug" && "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E echo "No interactive CMake dialog available.""
   DESC = No interactive CMake dialog available...
   restat = 1
 
@@ -106,7 +106,7 @@ build edit_cache: phony CMakeFiles\edit_cache.util
 # Utility command for rebuild_cache
 
 build CMakeFiles\rebuild_cache.util: CUSTOM_COMMAND
-  COMMAND = cmd.exe /C "cd /D E:\BS\8152\CompilerAssignment-A12-Code-Boa\CompilerAssignment\code\out\build\x64-Debug && "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" --regenerate-during-build -SE:\BS\8152\CompilerAssignment-A12-Code-Boa\CompilerAssignment\code -BE:\BS\8152\CompilerAssignment-A12-Code-Boa\CompilerAssignment\code\out\build\x64-Debug"
+  COMMAND = cmd.exe /C "cd /D "C:\Users\phuon\OneDrive - Algonquin College\8152-Compilers\A12\8152-Compilers\out\build\x64-Debug" && "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" --regenerate-during-build -S"C:\Users\phuon\OneDrive - Algonquin College\8152-Compilers\A12\8152-Compilers" -B"C:\Users\phuon\OneDrive - Algonquin College\8152-Compilers\A12\8152-Compilers\out\build\x64-Debug""
   DESC = Running CMake to regenerate build system...
   pool = console
   restat = 1
@@ -116,7 +116,7 @@ build rebuild_cache: phony CMakeFiles\rebuild_cache.util
 # =============================================================================
 # Target aliases.
 
-build BoaCompiler: phony BoaCompiler.exe
+build RidCompiler: phony RidCompiler.exe
 
 # =============================================================================
 # Folder targets.
@@ -124,9 +124,9 @@ build BoaCompiler: phony BoaCompiler.exe
 # =============================================================================
 
 #############################################
-# Folder: E:/BS/8152/CompilerAssignment-A12-Code-Boa/CompilerAssignment/code/out/build/x64-Debug
+# Folder: C:/Users/phuon/OneDrive - Algonquin College/8152-Compilers/A12/8152-Compilers/out/build/x64-Debug
 
-build all: phony BoaCompiler.exe
+build all: phony RidCompiler.exe
 
 # =============================================================================
 # Built-in targets
