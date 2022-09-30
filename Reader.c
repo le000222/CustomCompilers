@@ -84,12 +84,7 @@ ReaderPointer readerCreate(rid_int size, rid_int increment, rid_int mode) {
 		size = READER_DEFAULT_SIZE;
 	}
 	if (increment == 0) {
-		if(increment)
-		if (mode == 'f')
-		{
-			increment = 0;
-		}
-		if ((mode == 'a') || (mode == 'm')) {
+		if ((mode == MODE_ADDIT) || (mode == MODE_MULTI)) {
 			increment = READER_DEFAULT_INCREMENT;
 		}
 	}
@@ -148,7 +143,7 @@ ReaderPointer readerAddChar(ReaderPointer const readerPointer, rid_char ch) {
 	/* TO_DO: Test the inclusion of chars */
 	if (readerPointer->position.wrte * (rid_int)sizeof(rid_char) < readerPointer->size) {
 		/* TO_DO: This buffer is NOT full */
-		return readerPointer;
+		
 	} else {
 		/* TO_DO: Reset Full flag */
 		readerPointer->flags &= READER_RST_FULL;
@@ -190,7 +185,7 @@ ReaderPointer readerAddChar(ReaderPointer const readerPointer, rid_char ch) {
 	/* TO_DO: Add the char */
 	readerPointer->content[readerPointer->position.wrte++] = ch;
 	/* TO_DO: Updates histogram */
-	if (readerPointer->histogram[ch]++);
+	readerPointer->histogram[ch]++;
 	return readerPointer;
 }
 
@@ -338,12 +333,15 @@ rid_int readerPrint(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming (including invalid chars) */
 	c = readerGetChar(readerPointer);
 	/* TO_DO: Check flag if buffer EOB has achieved */
-	while (cont < readerPointer->position.wrte) {
-		cont++;
-		printf("%c", c);
-		c = readerGetChar(readerPointer);
+	if (!(readerPointer->flags & READER_CHK_END)) {
+		while (cont < readerPointer->position.wrte) {
+			cont++;
+			printf("%c", c);
+			c = readerGetChar(readerPointer);
+		}
+		return cont;
 	}
-	return cont;
+	return RID_FALSE;
 }
 
 /*
@@ -366,6 +364,9 @@ rid_int readerLoad(ReaderPointer const readerPointer, FILE* const fileDescriptor
 	rid_int size = 0;
 	rid_char c;
 	/* TO_DO: Defensive programming */
+	if (!readerPointer && !fileDescriptor) {
+		return RID_FALSE;
+	}
 	c = (rid_char)fgetc(fileDescriptor);
 	while (!feof(fileDescriptor)) {
 		if (!readerAddChar(readerPointer, c)) {
@@ -400,6 +401,8 @@ rid_boln readerRecover(ReaderPointer const readerPointer) {
 		return RID_FALSE;
 	}
 	/* TO_DO: Recover positions */
+	readerPointer->position.read = 0;
+	readerPointer->position.mark = 0;
 	return RID_TRUE;
 }
 
@@ -424,6 +427,7 @@ rid_boln readerRetract(ReaderPointer const readerPointer) {
 		return RID_FALSE;
 	}
 	/* TO_DO: Retract (return 1 pos read) */
+	readerPointer->position.wrte--;
 	return RID_TRUE;
 }
 
@@ -448,6 +452,8 @@ rid_boln readerRestore(ReaderPointer const readerPointer) {
 		return RID_FALSE;
 	}
 	/* TO_DO: Restore positions (read/mark) */
+	readerPointer->position.read = 0;
+	readerPointer->position.wrte = 0;
 	return RID_TRUE;
 }
 
@@ -502,8 +508,8 @@ rid_char* readerGetContent(ReaderPointer const readerPointer, rid_int pos) {
 		return NULL;
 	}
 	/* TO_DO: Return content (string) */
-	if (pos > 0 && pos < readerGetPosWrte(readerPointer)) {
-		return readerPointer->content[pos];
+	if (pos >= 0 && pos < readerGetPosWrte(readerPointer)) {
+		return readerPointer->content;
 	}
 	return NULL;
 }
@@ -694,21 +700,31 @@ rid_byte readerGetFlags(ReaderPointer const readerPointer) {
 rid_int readerShowStat(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
 	if (!readerPointer) {
-		return 0;
+		return RID_FALSE;
 	}
-	/* TO_DO: Updates the histogram    ??????    */ 
-	return 0;
+	/* TO_DO: Updates the histogram */
+	rid_int count = 0;
+	for (rid_int i = 0; i < NCHAR; i++) {
+		if (readerPointer->histogram[i] > 0) {
+			count++;
+		}
+	}
+	return count;
 }
 
+/* Addtional function for printing histogram to the console */
 rid_void readerPrintHistogram(ReaderPointer const readerPointer) {
 	rid_int counter = 0;
 	rid_int numChars = 0;
+	rid_int i = 0;
 	rid_char ch = '\0';
 	for (counter = 0; counter < NCHAR; counter++) {
 		numChars = readerPointer->histogram[counter];
 		if (numChars > 0) {
 			ch = readerPointer->content[counter];
 			printf("%s%d%s%d%s", "Reader[", ch, "]=", numChars, "\n");
+			i++;
 		}
 	}
+	printf("Number of different chars read: %d\n", i);
 }

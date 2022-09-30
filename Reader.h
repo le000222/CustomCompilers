@@ -147,6 +147,6 @@ rid_int			readerGetInc(ReaderPointer const);
 rid_int			readerGetMode(ReaderPointer const);
 rid_byte		readerGetFlags(ReaderPointer const);
 rid_int			readerShowStat(ReaderPointer const);
+rid_void		readerPrintHistogram(ReaderPointer const readerPointer);
 
 #endif
-

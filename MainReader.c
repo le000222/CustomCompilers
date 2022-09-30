@@ -245,9 +245,9 @@ rid_void displayBuffer(BufferReader* ptr_Buffer) {
 		readerGetPosWrte(ptr_Buffer));
 	printf("The operational mode of the buffer is: %c\n",
 		readerGetMode(ptr_Buffer));
-	printf("The increment factor of the buffer is:  %lu\n",
+	printf("The increment factor of the buffer is: %lu\n",
 		readerGetInc(ptr_Buffer));
-	printf("The first symbol in the buffer is:  %c\n",
+	printf("The first symbol in the buffer is: %c\n",
 		readerGetPosWrte(ptr_Buffer) ? *readerGetContent(ptr_Buffer, 0) : ' ');
 	printf("The value of the flags field is: %02hX\n",
 		readerGetFlags(ptr_Buffer));
