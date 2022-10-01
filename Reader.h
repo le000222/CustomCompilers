@@ -22,14 +22,17 @@
 */
 
 /*
-************************************************************
+***********************************************************
 * File name: Reader.h
 * Compiler: MS Visual Studio 2022
-* Course: CST 8152 – Compilers, Lab Section: [011, 012, 013]
+* Author: [Ngoc Phuong Khanh Le, 041004318], [Dan McCue, 040772626]
+* Course: CST 8152 – Compilers, Lab Section: [011]
 * Assignment: A12.
-* Date: Sep 01 2022
+* Date: Oct 01 2022
 * Professor: Paulo Sousa
 * Purpose: This file is the main header for Reader (.h)
+	rid_int			readerGetMode(ReaderPointer const);
+* Function list: readerCreate(), readerAddChar(), readerClear(), readerFree(), readerIsFull(), readerIsEmpty(), readerSetMark(), readerPrint(), readerLoad(), readerRecover(), readerRetract(), readerRestore(), readerGetChar(), readerGetContent(), readerGetPosRead(), readerGetPosWrte(), readerGetPosMark(), readerGetSize(), readerGetInc(), readerGetMode(), readerGetFlags(), readerShowStat(), readerPrintHistogram()
 ************************************************************
 */
 

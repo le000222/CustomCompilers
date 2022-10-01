@@ -44,3 +44,7 @@
 61	460	6863661081380401	RidCompiler.exe	46653204cf25f065
 1	64	6863661384018003	CMakeFiles/RidCompiler.dir/Compilers.c.obj	abd8f066c1b3fcf7
 64	182	6863661384978601	RidCompiler.exe	46653204cf25f065
+4	371	6863692833683446	CMakeFiles/RidCompiler.dir/Reader.c.obj	97ca0bbace8c0a40
+0	409	6863692833720990	CMakeFiles/RidCompiler.dir/Compilers.c.obj	abd8f066c1b3fcf7
+10	423	6863692834116437	CMakeFiles/RidCompiler.dir/MainReader.c.obj	fd6da047cae01037
+425	656	6863692836285037	RidCompiler.exe	46653204cf25f065

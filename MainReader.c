@@ -22,16 +22,19 @@
 */
 
 /*
-************************************************************
+***********************************************************
 * File name: MainReader.c
 * Compiler: MS Visual Studio 2022
-* Course: CST 8152 – Compilers, Lab Section: [011, 012, 013]
-* Assignment: A12, A22, A32.
-* Date: Sep 01 2022
+* Author: [Ngoc Phuong Khanh Le, 041004318], [Dan McCue, 040772626]
+* Course: CST 8152 – Compilers, Lab Section: [011]
+* Assignment: A12.
+* Date: Oct 01 2022
 * Professor: Paulo Sousa
-* Purpose: This file is the main code for Buffer (A12)
-* Function list: (...).
-*************************************************************/
+* Purpose: This file is the main code for Buffer/Reader (A12)
+* Function list: bErrorPrint(), displayBuffer(), getFileSize(), isNumber(), startReader(), mainReader()
+************************************************************
+*/
+
 
 /*
  *.............................................................................

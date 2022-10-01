@@ -22,16 +22,18 @@
 */
 
 /*
-************************************************************
-* File name: compilers.h
+***********************************************************
+* File name: Compilers.h
 * Compiler: MS Visual Studio 2022
-* Course: CST 8152 – Compilers, Lab Section: [011, 012, 013]
-* Assignment: A12, A22, A32.
-* Date: Sep 01 2022
+* Author: [Ngoc Phuong Khanh Le, 041004318], [Dan McCue, 040772626]
+* Course: CST 8152 – Compilers, Lab Section: [011]
+* Assignment: A12.
+* Date: Oct 01 2022
 * Professor: Paulo Sousa
 * Purpose: This file defines the functions called by main function.
-* Function list: mainReader(), mainScanner(), mainParser().
-*************************************************************/
+* Function list: mainReader(), printLogo().
+************************************************************
+*/
 
 #ifndef COMPILERS_H_
 #define COMPILERS_H_
