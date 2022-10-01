@@ -14,20 +14,35 @@
 [Option 'R': Starting READER .....]
 
 Reading file INPUT4_Datatypes.de ....Please wait
+The input file INPUT4_Datatypes.de has not been completely loaded.
+Current size of buffer: 250.
+Last character read from the input file is: 	 9
+Input file size: 297
 
 Printing buffer parameters:
 
 The capacity of the buffer is:  250
-Current buffer size **************** 0
 The current size of the buffer is:  0
 The operational mode of the buffer is: f
-Current increment size **************** 0
-The increment factor of the buffer is:  0
-Current buffer size **************** 0
-The first symbol in the buffer is:   
+The increment factor of the buffer is: 0
+The first symbol in the buffer is:  
 The value of the flags field is: 04
-Number of different chars read: 0
+Number of different chars read: 55
 
 Printing buffer contents:
 
-Empty buffer
+#
+BOA Example
+The program is lexically correct about the SOFIA city 
+#
+main& {
+	data {
+		int FoundationYear$;
+		real Area%, HDI%;
+		string CountryName@;
+	}
+	code {
+		FoundationYear$ = -7000;
+		Area% = 492.0;
+		HDI%=0.871;
+		CountryName@ = 'Bulgary';

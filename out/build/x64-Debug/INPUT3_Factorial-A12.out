@@ -14,20 +14,34 @@
 [Option 'R': Starting READER .....]
 
 Reading file INPUT3_Factorial.de ....Please wait
+The input file INPUT3_Factorial.de has not been completely loaded.
+Current size of buffer: 250.
+Last character read from the input file is:   32
+Input file size: 362
 
 Printing buffer parameters:
 
 The capacity of the buffer is:  250
-Current buffer size **************** 0
 The current size of the buffer is:  0
 The operational mode of the buffer is: f
-Current increment size **************** 0
-The increment factor of the buffer is:  0
-Current buffer size **************** 0
-The first symbol in the buffer is:   
+The increment factor of the buffer is: 0
+The first symbol in the buffer is:  
 The value of the flags field is: 04
-Number of different chars read: 0
+Number of different chars read: 44
 
 Printing buffer contents:
 
-Empty buffer
+# BOA Example 4:
+  Testing numbers (ex: factorial) #
+main& {
+    data {
+        int i$, n$, f$;
+    }
+    code {
+        f$=1;
+        i$=1;
+        print&('Write a number:');
+        input&(n$);
+        while (i$<n$) do {
+            f$ = f$ * i$;
+ 

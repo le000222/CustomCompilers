@@ -5,18 +5,19 @@
 * Author: Svillen Ranev - Paulo Sousa
 * Professors: Paulo Sousa
 ************************************************************
- _________________________________
-|                                 |
-| ........ BOA LANGUAGE ......... |
-|     __    __    __    __        |
-|    /  \  /  \  /  \  /  \       |
-| __/  __\/  __\/  __\/  __\__    |
-| _/  /__/  /__/  /__/  /_____|   |
-|  \_/ \   / \   / \   / \  \___  |
-|       \_/   \_/   \_/   \___o_> |
-|                                 |
-| .. ALGONQUIN COLLEGE - 2022F .. |
-|_________________________________|
+ _____________________________________
+|                                    |
+| ....... 'RID' LANGUAGE ........    |
+|    _____    _______    _____       |
+|   ||   \\    || ||    ||    \\     |
+|   ||    \\   || ||    ||     \\    |
+|   || ___//   || ||    ||      \\   |
+|   ||  \\     || ||    ||      //   |
+|   ||   \\    || ||    ||     //    |
+| __||__  \\___||_||____||____//     |
+|                                    |
+|  .. ALGONQUIN COLLEGE - 2022F ..   |
+|____________________________________|
 
 */
 
@@ -74,8 +75,6 @@
 ReaderPointer readerCreate(rid_int size, rid_int increment, rid_int mode) {
 	ReaderPointer readerPointer = NULL;
 	/* TO_DO: Defensive programming */
-	//mode = tolower(mode);
-
 	if ( (size < 0) || (increment < 0) ) {
 		return readerPointer;
 	}
@@ -96,6 +95,9 @@ ReaderPointer readerCreate(rid_int size, rid_int increment, rid_int mode) {
 	}
 	readerPointer->content = (rid_char*)malloc(size);
 	/* TO_DO: Defensive programming */
+	if (readerPointer->content == NULL) {
+		return NULL;
+	}
 	/* TO_DO: Initialize the histogram */
 	for (rid_int counter = 0; counter < NCHAR; counter++) {
 		readerPointer->histogram[counter] = 0;
@@ -134,17 +136,15 @@ ReaderPointer readerAddChar(ReaderPointer const readerPointer, rid_char ch) {
 	if (!readerPointer && (ch < 0 || ch > 127)) {
 		return NULL;
 	}
-	else if (ch > 0 && ch < 31) {
-		/* print something printable but not in the system of ASCII */
+	else if ((ch > 0 && ch < 32) && (ch != '\n' && ch != '\t')) {
+		/* print something printable but not in the ASCII system */
+		return readerPointer;
 	}
 	
 	/* TO_DO: Reset Realocation */
 	readerPointer->flags &= READER_RST_REL;
 	/* TO_DO: Test the inclusion of chars */
-	if (readerPointer->position.wrte * (rid_int)sizeof(rid_char) < readerPointer->size) {
-		/* TO_DO: This buffer is NOT full */
-		
-	} else {
+	if (!(readerPointer->position.wrte * (rid_int)sizeof(rid_char) < readerPointer->size)) {
 		/* TO_DO: Reset Full flag */
 		readerPointer->flags &= READER_RST_FULL;
 		switch (readerPointer->mode) {
@@ -332,6 +332,9 @@ rid_int readerPrint(ReaderPointer const readerPointer) {
 	rid_char c;
 	/* TO_DO: Defensive programming (including invalid chars) */
 	c = readerGetChar(readerPointer);
+	if (c < 0 || c > 127) {
+		return RID_FALSE;
+	}
 	/* TO_DO: Check flag if buffer EOB has achieved */
 	if (!(readerPointer->flags & READER_CHK_END)) {
 		while (cont < readerPointer->position.wrte) {
@@ -423,11 +426,11 @@ rid_boln readerRecover(ReaderPointer const readerPointer) {
 */
 rid_boln readerRetract(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
-	if (!readerPointer) {
+	if (!readerPointer || readerPointer->position.read < 0) {
 		return RID_FALSE;
 	}
 	/* TO_DO: Retract (return 1 pos read) */
-	readerPointer->position.wrte--;
+	readerPointer->position.read--;
 	return RID_TRUE;
 }
 
@@ -452,8 +455,7 @@ rid_boln readerRestore(ReaderPointer const readerPointer) {
 		return RID_FALSE;
 	}
 	/* TO_DO: Restore positions (read/mark) */
-	readerPointer->position.read = 0;
-	readerPointer->position.wrte = 0;
+	readerPointer->position.read = readerPointer->position.mark;
 	return RID_TRUE;
 }
 
@@ -476,13 +478,18 @@ rid_boln readerRestore(ReaderPointer const readerPointer) {
 rid_char readerGetChar(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
 	if (!readerPointer) {
-		return NULL;
+		return '\0';
 	}
 	/* TO_DO: Check condition to read/wrte */
-	/* TO_DO: Set EOB flag */
-	readerPointer->flags |= READER_SET_END;
-	/* TO_DO: Reset EOB flag */
-	readerPointer->flags &= READER_RST_END;
+	if (readerPointer->position.read == readerPointer->position.wrte) {
+		/* TO_DO: Set EOB flag */
+		readerPointer->flags |= READER_SET_END;
+		return '\0';
+	}
+	else {
+		/* TO_DO: Reset EOB flag */
+		readerPointer->flags &= READER_RST_END;
+	}
 	return readerPointer->content[readerPointer->position.read++];
 }
 
@@ -532,12 +539,11 @@ rid_char* readerGetContent(ReaderPointer const readerPointer, rid_int pos) {
 */
 rid_int readerGetPosRead(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
-	if (!readerPointer) {
+	if (!readerPointer || readerPointer->position.read > readerPointer->position.wrte) {
 		return RID_FALSE;
 	}
 	/* TO_DO: Return read */
 	return readerPointer->position.read;
-	return 0;
 }
 
 
@@ -557,7 +563,7 @@ rid_int readerGetPosRead(ReaderPointer const readerPointer) {
 */
 rid_int readerGetPosWrte(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
-	if (!readerPointer) {
+	if (!readerPointer || readerPointer->position.wrte >= readerPointer->size) {
 		return RID_FALSE;
 	}
 	/* TO_DO: Return wrte */
@@ -581,7 +587,7 @@ rid_int readerGetPosWrte(ReaderPointer const readerPointer) {
 */
 rid_int readerGetPosMark(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
-	if (!readerPointer) {
+	if (!readerPointer || readerPointer->position.mark < 0) {
 		return RID_FALSE;
 	}
 	/* TO_DO: Return mark */
@@ -605,7 +611,7 @@ rid_int readerGetPosMark(ReaderPointer const readerPointer) {
 */
 rid_int readerGetSize(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
-	if (!readerPointer) {
+	if (!readerPointer || readerPointer->size < 0) {
 		return RID_FALSE;
 	}
 	/* TO_DO: Return size */
@@ -628,7 +634,7 @@ rid_int readerGetSize(ReaderPointer const readerPointer) {
 */
 rid_int readerGetInc(ReaderPointer const readerPointer) {
 	/* TO_DO: Defensive programming */
-	if (!readerPointer) {
+	if (!readerPointer || readerPointer->increment < 0) {
 		return RID_FALSE;
 	}
 	/* TO_DO: Return increment */

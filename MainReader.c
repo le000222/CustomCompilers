@@ -5,18 +5,19 @@
 * Author: Svillen Ranev - Paulo Sousa
 * Professors: Paulo Sousa
 ************************************************************
- _________________________________
-|                                 |
-| ........ BOA LANGUAGE ......... |
-|     __    __    __    __        |
-|    /  \  /  \  /  \  /  \       |
-| __/  __\/  __\/  __\/  __\__    |
-| _/  /__/  /__/  /__/  /_____|   |
-|  \_/ \   / \   / \   / \  \___  |
-|       \_/   \_/   \_/   \___o_> |
-|                                 |
-| .. ALGONQUIN COLLEGE - 2022F .. |
-|_________________________________|
+ _____________________________________
+|                                    |
+| ....... 'RID' LANGUAGE ........    |
+|    _____    _______    _____       |
+|   ||   \\    || ||    ||    \\     |
+|   ||    \\   || ||    ||     \\    |
+|   || ___//   || ||    ||      \\   |
+|   ||  \\     || ||    ||      //   |
+|   ||   \\    || ||    ||     //    |
+| __||__  \\___||_||____||____//     |
+|                                    |
+|  .. ALGONQUIN COLLEGE - 2022F ..   |
+|____________________________________|
 
 */
 
@@ -162,7 +163,8 @@ rid_void startReader(rid_char* program, rid_char* input, rid_char mode, rid_int 
 	rid_char symbol;			/* symbol read from input file */
 
 	/* Create buffer */
-	bufferp = readerCreate(size, (char)increment, mode);
+	mode = tolower(mode);
+	bufferp = readerCreate(size, increment, mode);
 
 	if (bufferp == NULL) {
 		bErrorPrint("%s%s", program,
