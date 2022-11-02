@@ -10,7 +10,8 @@ project ("RidCompiler")
 # Add source to this project's executable: check name and dependences
 add_executable (RidCompiler
 	"Compilers.h"	"Compilers.c"
-	"Reader.h"		"Reader.c"		"MainReader.c"
+	"Reader.h"		"Reader.c"		"MainReader.c"		"MainScanner.c"
+	"Scanner.h"		"Scanner.c"
 )
 
 # TO_DO: Add tests and install targets if needed.

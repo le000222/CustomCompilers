@@ -5,11 +5,14 @@
     {
       "type": "default",
       "project": "CMakeLists.txt",
-      "projectTarget": "BoaCompiler.exe",
-      "name": "BoaCompiler.exe",
+      "projectTarget": "RidCompiler.exe",
+      "name": "RidCompiler.exe",
       "args": [
-        "R",
-        "README.txt"
+        "S",
+        "README.txt ",
+        "a ",
+        "10 ",
+        "10 "
       ]
     }
   ]

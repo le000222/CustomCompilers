@@ -14,8 +14,8 @@
 
 [Option 'R': Starting READER .....]
 
-Reading file INPUT3_Factorial.de ....Please wait
-The input file INPUT3_Factorial.de has not been completely loaded.
+Reading file INPUT3_Factorial.boa ....Please wait
+The input file INPUT3_Factorial.boa has not been completely loaded.
 Current size of buffer: 250.
 Last character read from the input file is:   32
 Input file size: 362

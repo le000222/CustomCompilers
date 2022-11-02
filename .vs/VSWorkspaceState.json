@@ -1,7 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\out",
+    "\\out\\build"
   ],
-  "SelectedNode": "\\Reader.c",
+  "SelectedNode": "\\Reader.h",
   "PreviewInSolutionExplorer": false
 }

@@ -2,7 +2,7 @@
 :: SCRIPT A12 - CST8152 - Fall 2022
 
 CLS
-SET COMPILER=RidCompiler.exe
+SET COMPILER=Boa.exe
 
 SET FILE1=INPUT0_Empty
 SET FILE2=INPUT1_Hello
@@ -13,7 +13,7 @@ SET FILE6=INPUT5_General
 SET FILE7=INPUT6_Big
 
 SET ASSIGNMENT=A12
-SET EXTENSION=de
+SET EXTENSION=boa
 SET OUTPUT=out
 SET ERROR=err
 
@@ -24,19 +24,18 @@ SET PARAM=R
 :: ---------------------------------------------------------------------
 
 @echo off
-ECHO " ____________________________________ "
-ECHO "|                                    |"
-ECHO "|  ....... 'RID' LANGUAGE ........   |"
-ECHO "|    _____    _______    _____       |"
-ECHO "|   ||   \\    || ||    ||    \\     |"
-ECHO "|   ||    \\   || ||    ||     \\    |"
-ECHO "|   || ___//   || ||    ||      \\   |"
-ECHO "|   ||  \\     || ||    ||      //   |"
-ECHO "|   ||   \\    || ||    ||     //    |"
-ECHO "| __||__  \\___||_||____||____//     |"
-ECHO "|                                    |"
-ECHO "|  .. ALGONQUIN COLLEGE - 2022F ..   |"
-ECHO "|____________________________________|"
+ECHO " _________________________________ "
+ECHO "|                                 |"
+ECHO "| ....... 'BOA' LANGUAGE ........ |"
+ECHO "|     __    __    __    __        |"
+ECHO "|    /  \  /  \  /  \  /  \       |"
+ECHO "| __/  __\/  __\/  __\/  __\__    |"
+ECHO "| _/  /__/  /__/  /__/  /_____|   |"
+ECHO "|  \_/ \   / \   / \   / \  \___  |"
+ECHO "|       \_/   \_/   \_/   \___o_> |"
+ECHO "|                                 |"
+ECHO "| .. ALGONQUIN COLLEGE - 2022F .. |"
+ECHO "|_________________________________|"
 ECHO "                                   "
 ECHO "[READER SCRIPT ...................]"
 ECHO "                                   "
