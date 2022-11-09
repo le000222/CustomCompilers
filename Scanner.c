@@ -139,6 +139,92 @@ Token tokenizer(void) {
 			break;
 
 		/* Cases for symbols */
+		case '&':
+			currentToken.code = AND_T;
+			currentToken.attribute.logicalOperator = OP_AND;
+			return currentToken;
+		case '|':
+			currentToken.code = OR_T;
+			currentToken.attribute.logicalOperator = OP_OR;
+			return currentToken;
+		case '!':
+			currentToken.code = NOT_T;
+			currentToken.attribute.logicalOperator = OP_NOT;
+			return currentToken;
+		case ',':
+			currentToken.code = ARG_SEP_T;
+			return currentToken;
+		case '/':
+			currentToken.code = DIV_T;
+			currentToken.attribute.arithmeticOperator = OP_DIV;
+			return currentToken;
+		case '*':
+			currentToken.code = MUL_T;
+			currentToken.attribute.arithmeticOperator = OP_MUL;
+			return currentToken;
+		case '+':
+			currentToken.code = PLUS_T;
+			currentToken.attribute.arithmeticOperator = OP_ADD;
+			return currentToken;
+		case '-':
+			currentToken.code = MIN_T;
+			currentToken.attribute.arithmeticOperator = OP_SUB;
+			return currentToken;
+		case '=':
+			c = readerGetChar(sourceBuffer);
+			if (c == '=') {
+				currentToken.code = EQUAL_T;
+				currentToken.attribute.relationalOperator = OP_EQ;
+				return currentToken;
+			}
+			readerRetract(sourceBuffer);
+			currentToken.code = ASSIGN_T;
+			return currentToken;
+		case '<':
+			c = readerGetChar(sourceBuffer);
+			if (c == '>') {
+				currentToken.code = NOT_EQ_T;
+				currentToken.attribute.relationalOperator = OP_NE;
+				return currentToken;
+			}
+			else {
+				/* Comments */
+				if (c == '!') {
+					do {
+						do {
+							c = readerGetChar(sourceBuffer);
+							if (c == CHARSEOF0 || c == CHARSEOF255) {
+								readerRetract(sourceBuffer);
+								break;
+							}
+							else if (c == '\n') {
+								line++;
+							}
+						} while (c != '!' && c != CHARSEOF0 && c != CHARSEOF255);
+						c = readerGetChar(sourceBuffer);
+						if (c == '>') {
+							break;
+						}
+						else {
+							readerRetract(sourceBuffer);
+						}
+						if (c == CHARSEOF0 || c == CHARSEOF255) {
+							break;
+						}
+					} while (RID_TRUE);
+				}
+				else {
+					readerRetract(sourceBuffer);
+					currentToken.code = LESS_T;
+					currentToken.attribute.relationalOperator = OP_LT;
+					return currentToken;
+				}
+			}
+			break;
+		case '>':
+			currentToken.code = GTR_T;
+			currentToken.attribute.relationalOperator = OP_GT;
+			return currentToken;
 		case ';':
 			currentToken.code = EOS_T;
 			return currentToken;
@@ -154,20 +240,6 @@ Token tokenizer(void) {
 		case '}':
 			currentToken.code = RBR_T;
 			return currentToken;
-		/* Comments */
-		case '#':
-			newc = readerGetChar(sourceBuffer);
-			do {
-				c = readerGetChar(sourceBuffer);
-				if (c == CHARSEOF0 || c == CHARSEOF255) {
-					readerRetract(sourceBuffer);
-					//return currentToken;
-				}
-				else if (c == '\n') {
-					line++;
-				}
-			} while (c != '#' && c != CHARSEOF0 && c != CHARSEOF255);
-			break;
 		/* Cases for END OF FILE */
 		case CHARSEOF0:
 			currentToken.code = SEOF_T;
@@ -273,7 +345,7 @@ rid_int nextState(rid_int state, rid_char c) {
 /* TO_DO: Use your column configuration */
 
 /* Adjust the logic to return next column in TT */
-/*	[A-z](0), [0-9](1),	_(2), &(3), "(4), SEOF(5), other(6) */
+/*	[A-z](0), [0-9](1),	_(2), '('(3), '(4), SEOF(5), other(6), period(7) */
 
 rid_int nextClass(rid_char c) {
 	rid_int val = -1;
@@ -287,6 +359,9 @@ rid_int nextClass(rid_char c) {
 	case CHRCOL4:
 		val = 4;
 		break;
+	case CHRCOL7:
+		val = 7;
+			break;
 	case CHARSEOF0:
 	case CHARSEOF255:
 		val = 5;
@@ -319,19 +394,49 @@ Token funcIL(rid_char lexeme[]) {
 	Token currentToken = { 0 };
 	rid_long tlong;
 	if (lexeme[0] != '\0' && strlen(lexeme) > NUM_LEN) {
-		currentToken = (*finalStateTable[ESNR])(lexeme);
+		currentToken.code = RTE_T;
+		strcpy(currentToken.attribute.errLexeme, "Run Time Error:");
+		errorNumber = RTE_CODE;
+		return currentToken;
+	}
+	tlong = atol(lexeme);
+	if (tlong >= 0 && tlong <= SHRT_MAX) {
+		currentToken.code = INL_T;
+		currentToken.attribute.intValue = (rid_int)tlong;
 	}
 	else {
-		tlong = atol(lexeme);
-		if (tlong >= 0 && tlong <= SHRT_MAX) {
-			currentToken.code = INL_T;
-			currentToken.attribute.intValue = (rid_int)tlong;
-		}
-		else {
-			currentToken = (*finalStateTable[ESNR])(lexeme);
-		}
+		currentToken.code = RTE_T;
+		strcpy(currentToken.attribute.errLexeme, "Run Time Error:");
+		errorNumber = RTE_CODE;
+		return currentToken;
 	}
+
 	return currentToken;
+
+}
+Token funcFloat(rid_char lexeme[]) {
+	Token currentToken = { 0 };
+	rid_float tfloat;
+	if (lexeme[0] != '\0' && strlen(lexeme) > FLT_PT_LEN) {
+		currentToken.code = RTE_T;
+		strcpy(currentToken.attribute.errLexeme, "Run Time Error:");
+		errorNumber = RTE_CODE;
+		return currentToken;
+	}
+	tfloat = atof(lexeme);
+	if (tfloat >= 0 && tfloat <= LONG_MAX) {
+		currentToken.code = FLT_PT_T;
+		currentToken.attribute.floatValue = (rid_float)tfloat;
+	}
+	else {
+		currentToken.code = RTE_T;
+		strcpy(currentToken.attribute.errLexeme, "Run Time Error:");
+		errorNumber = RTE_CODE;
+		return currentToken;
+	}
+
+	return currentToken;
+
 }
 
 
@@ -352,22 +457,20 @@ Token funcIL(rid_char lexeme[]) {
 Token funcID(rid_char lexeme[]) {
 	Token currentToken = { 0 };
 	size_t length = strlen(lexeme);
-	rid_char lastch = lexeme[length - 1];
 	rid_int isID = RID_FALSE;
-	switch (lastch) {
-		case MNIDPREFIX:
-			currentToken.code = MNID_T;
-			isID = RID_TRUE;
-			break;
-		default:
-			// Test Keyword
-			currentToken = funcKEY(lexeme);
-			break;
-	}
-	if (isID == RID_TRUE) {
+	rid_char lastch;
+
+	lastch = readerGetChar(sourceBuffer);
+	readerRetract(sourceBuffer);
+	if (lastch == '(') {
+		currentToken.code = MNID_T;
 		strncpy(currentToken.attribute.idLexeme, lexeme, VID_LEN);
-		currentToken.attribute.idLexeme[VID_LEN] = CHARSEOF0;
 	}
+	else {
+		currentToken = funcKEY(lexeme);
+	}
+	currentToken.attribute.idLexeme[VID_LEN] = CHARSEOF0;
+
 	return currentToken;
 }
 
@@ -428,7 +531,9 @@ Token funcKEY(rid_char lexeme[]) {
 		currentToken.attribute.codeType = kwindex;
 	}
 	else {
-		currentToken = funcErr(lexeme);
+		currentToken.code = VAR_T;
+		strcpy(currentToken.attribute.idLexeme, lexeme);
+/*		currentToken = funcErr(lexeme); */
 	}
 	return currentToken;
 }
@@ -492,30 +597,81 @@ rid_void printToken(Token t) {
 	case MNID_T:
 		printf("MNID_T\t\t%s\n", t.attribute.idLexeme);
 		break;
+	case VAR_T:
+		printf("VAR_T\t\t%s\n", t.attribute.idLexeme);
+		break;
 	case STR_T:
 		printf("STR_T\t\t%d\t ", (rid_int)t.attribute.codeType);
 		printf("%s\n", readerGetContent(stringLiteralTable, (rid_int)t.attribute.codeType));
 		break;
 	case LPR_T:
-		printf("LPR_T\n");
+		printf("LPR_T\t\t%c\n", '(');
 		break;
 	case RPR_T:
-		printf("RPR_T\n");
+		printf("RPR_T\t\t%c\n", ')');
 		break;
 	case LBR_T:
-		printf("LBR_T\n");
+		printf("LBR_T\t\t%c\n", '{');
 		break;
 	case RBR_T:
-		printf("RBR_T\n");
+		printf("RBR_T\t\t%c\n", '}');
+		break;
+	case ASSIGN_T:
+		printf("ASSIGN_T\t%c\n", '=');
 		break;
 	case KW_T:
 		printf("KW_T\t\t%s\n", keywordTable[t.attribute.codeType]);
 		break;
 	case EOS_T:
-		printf("EOS_T\n");
+		printf("EOS_T\t\t%c\n", ';');
+		break;
+	case INL_T:
+		printf("INL_T\t\t%d\n",t.attribute.intValue);
+		break;
+	case COMM_T:
+		printf("COMM_T\n");
+		break;
+	case EQUAL_T:
+		printf("EQUAL_T\t%c%c\n", '=','=');
+		break;
+	case ARG_SEP_T:
+		printf("ARG_SEP_T\t%c\n", ',');
+		break;
+	case DIV_T:
+		printf("DIV_T\t\t%c\n", '/');
+		break;
+	case MUL_T:
+		printf("MUL_T\t\t%c\n", '*');
+		break;
+	case PLUS_T:
+		printf("PLUS_T\t\t%c\n", '+');
+		break;
+	case MIN_T:
+		printf("MIN_T\t\t%c\n", '-');
+		break;
+	case LESS_T:
+		printf("LESS_T\t\t%c\n", '<');
+		break;
+	case GTR_T:
+		printf("GTR_T\t\t%c\n", '>');
+		break;
+	case NOT_EQ_T:
+		printf("NOT_EQ_T\t%c%c\n", '<','>');
+		break;
+	case NOT_T:
+		printf("NOT_T\t\t%c\n", '!');
+		break;
+	case AND_T:
+		printf("AND_T\t\t%c\n", '&');
+		break;
+	case OR_T:
+		printf("OR_T\t\t%c\n", '|');
+		break;
+	case FLT_PT_T:
+		printf("FLT_PT_T\t%.2f\n", t.attribute.floatValue);
 		break;
 	default:
-		printf("Scanner error: invalid token code: %d\n", t.code);
+		printf("Scanner error: unknown token code: %d\n", t.code);
 	}
 }
 

@@ -1,10 +1,15 @@
-# BOA Example 2:
-  The program is "lexically" correct
-  and should not generate any error #
-main& {
-	data {
+<! RID Example 3:
+Volume of a sphere !>
+main() {
+	Public {
+		double PI, r, Vol;
 	}
-	code {
-		print&('Hello world!');
+	calculate() {
+		PI = 3.14;
+		input(r);
+		Vol = 4.0 / 3.0 * PI * (r * r * r);
+		print(Vol);
+		<>
 	}
+	print('Good Job Team!!');
 }

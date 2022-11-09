@@ -307,7 +307,7 @@ rid_boln readerIsEmpty(ReaderPointer const readerPointer) {
 */
 rid_boln readerSetMark(ReaderPointer const readerPointer, rid_int mark) {
 	/* TO_DO: Defensive programming */
-	if (!readerPointer || mark<0 || mark > readerPointer->position.wrte)
+	if (!readerPointer || mark < 0 || mark > readerPointer->position.wrte)
 		return RID_FALSE;
 	/* TO_DO: Adjust mark */
 	readerPointer->position.mark = mark;
@@ -518,7 +518,7 @@ rid_char* readerGetContent(ReaderPointer const readerPointer, rid_int pos) {
 	}
 	/* TO_DO: Return content (string) */
 	if (pos >= 0 && pos < readerGetPosWrte(readerPointer)) {
-		return readerPointer->content;
+		return readerPointer->content + pos;
 	}
 	return NULL;
 }

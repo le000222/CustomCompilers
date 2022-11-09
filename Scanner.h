@@ -35,11 +35,11 @@
 /*#pragma warning(error:4001)*/	/* to enforce C89 comments - to make // comments an error */
 
 /* Constants */
-#define VID_LEN 20  /* variable identifier length */
-#define ERR_LEN 40  /* error message length */
-#define NUM_LEN 5   /* maximum number of digits for IL */
-
-#define RTE_CODE 1  /* Value for run-time error */
+#define VID_LEN 20    /* variable identifier length */
+#define ERR_LEN 40    /* error message length */
+#define NUM_LEN 5     /* maximum number of digits for IL */
+#define FLT_PT_LEN 6  /* maximum number of digits for FLT_PT */
+#define RTE_CODE 1    /* Value for run-time error */
 
 /* TO_DO: Define Token codes - Create your token classes */
 enum TOKENS {
@@ -54,7 +54,23 @@ enum TOKENS {
 	EOS_T,		/*  8: End of statement (semicolon) */
 	RTE_T,		/*  9: Run-time error token */
 	INL_T,		/* 10: Integer literal token */
-	SEOF_T		/* 11: Source end-of-file token */
+	FLT_PT_T,   /* 11*/
+	VAR_T,		/* 12: Variable name Identifier */
+	ASSIGN_T,	/* 13: Assignment operator Identifier */
+	LESS_T,     /* 14: Less than operator */
+	GTR_T,		/* 15: Greater than operator */
+	MIN_T,		/* 16: Subtraction operator */
+	PLUS_T,		/* 17: Addition Operator */
+	MUL_T,		/* 18: Multpily operator */
+	DIV_T,		/* 19: Division operator */
+	ARG_SEP_T,	/* 20: Argument seperator */
+	EQUAL_T,	/* 21: Equal (to check if values are equal) */
+	COMM_T,		/* 22: Comments */
+	NOT_EQ_T,	/* 23: Not Equal token */
+	AND_T,		/* 24: Logical and & */
+	OR_T,		/* 25: Logical OR | */
+	NOT_T,		/* 26: Logical not ! */
+	SEOF_T		/* 27: Source end-of-file token */
 };
 
 /* TO_DO: Operators token attributes */
@@ -103,18 +119,16 @@ typedef struct Token {
 
 /*  Special case tokens processed separately one by one in the token-driven part of the scanner
  *  '=' , ' ' , '(' , ')' , '{' , '}' , == , <> , '>' , '<' , ';', 
- *  white space, #comment\n , ',' , ';' , '-' , '+' , '*' , '/', # , 
+ *  white space, #comment\n , ',' , ';' , '-' , '+' , '*' , '/', # ,  
  *  .&., .|. , .!. , SEOF.
  */
 
 /* TO_DO: Define lexeme FIXED classes */
 /* These constants will be used on nextClass */
 #define CHRCOL2 '_'
-#define CHRCOL3 '&'
+#define CHRCOL3 '('
 #define CHRCOL4 '\''
-
-/* These constants will be used on VID / MID function */
-#define MNIDPREFIX '&'
+#define CHRCOL7 '.'
 
 /* TO_DO: Error states and illegal state */
 #define FS		100		/* Final / Illegal state */
@@ -122,13 +136,13 @@ typedef struct Token {
 #define ESNR	102		/* Error state with no retract */
 
  /* TO_DO: State transition table definition */
-#define TABLE_COLUMNS 7
+#define TABLE_COLUMNS 10
 
-/* TO_DO: Transition table - type of states defined in separate table */
+/* TO_DO: Transition table - type of states defined in separate table
 static rid_int transitionTable[][TABLE_COLUMNS] = {
-/*   [A-z] , [0-9],    _,    &,    ", SEOF, other
-	   L(0),  D(1), U(2), M(3), Q(4), E(5),  O(6) */
-	{     1,  ESNR, ESNR, ESNR,    4, ESWR, ESNR}, // S0: NOAS
+  [A-z] , [0-9],    _,    &,    ", SEOF, other
+	   L(0),  D(1), U(2), M(3), Q(4), E(5),  O(6)
+	{     1,  ESNR,    1,    2, ESNR, ESWR, ESNR}, // S0: NOAS
 	{     1,     1,    1,    2, ESNR, ESWR,    3}, // S1: NOAS
 	{    FS,    FS,   FS,   FS,   FS,   FS,   FS}, // S2: ASNR (MVID)
 	{    FS,    FS,   FS,   FS,   FS,   FS,   FS}, // S3: ASWR (KEY)
@@ -137,7 +151,23 @@ static rid_int transitionTable[][TABLE_COLUMNS] = {
 	{    FS,    FS,   FS,   FS,   FS,   FS,   FS}, // S6: ASNR (ES)
 	{    FS,    FS,   FS,   FS,   FS,   FS,   FS}  // S7: ASWR (ER)
 };
-
+*/
+static rid_int transitionTable[][TABLE_COLUMNS] = {
+/*
+   [A-z] , [0-9], ' _ ',  ' ( ',    ' " ',  SEOF, other, 
+   RC(0),  RI(1), US(2), LPAREN(3), RS(4),  E(5),  O(6),    P(7)		*/
+{    1,      7,     1,    ESNR,        3,   ESWR,   ESNR,   ESNR}, // S0: NOAS
+{    1,      1,     1,       2,     ESNR,   ESWR,      2,   ESNR}, // S1: NOAS
+{   FS,     FS,     FS,     FS,       FS,     FS,     FS,	  FS}, // S2: ASWR (MVID) or (KEY) or (VAR)
+{    3,      3,      3,      3,        4,   ESWR,      3,	   3}, // S4: NOAS
+{   FS,     FS,     FS,     FS,       FS,     FS,     FS,	  FS}, // S5: ASNR (SL)
+{   FS,     FS,     FS,     FS,       FS,     FS,     FS,	  FS}, // S6: ASNR (ES)
+{   FS,     FS,     FS,     FS,       FS,     FS,     FS,	  FS}, // S7: ASWR (ER)
+{    3,      7,   ESNR,      3,     ESNR,   ESWR,      8,	   9}, // S8: NOAS 
+{   FS,     FS,    FS,      FS,       FS,     FS,     FS,	  FS}, // S9: ASNR (IL)
+{ ESNR,      9,  ESNR,    ESNR,     ESNR,   ESWR,     10,   ESNR}, // S10: NOAS
+{   FS,     FS,    FS,      FS,       FS,     FS,     FS,	  FS}  // S11: ASNR (FLT_PT)
+};
 /* Define accepting states types */
 #define NOFS	0		/* not accepting state */
 #define FSNR	1		/* accepting state with no retract */
@@ -147,12 +177,15 @@ static rid_int transitionTable[][TABLE_COLUMNS] = {
 static rid_int stateType[] = {
 	NOFS, /* 00 */
 	NOFS, /* 01 */
-	FSNR, /* 02 (MID) - Methods */
-	FSWR, /* 03 (KEY) */
+	FSWR, /* 02 (MID),(VAR),(KEY) - Methods, Variables, keys */
 	NOFS, /* 04 */
 	FSNR, /* 05 (SL) */
 	FSNR, /* 06 (Err1 - no retract) */
-	FSWR  /* 07 (Err2 - retract) */
+	FSWR, /* 07 (Err2 - retract) */
+	NOFS, /* 08 */
+	FSNR, /* 09 (INT L) - Integer literal */
+	NOFS, /* 10 */
+	FSNR  /* 11 (FLT_PT) Floating point */
 };
 
 /*
@@ -176,10 +209,12 @@ Automata definitions
 typedef Token(*PTR_ACCFUN)(rid_char* lexeme);
 
 /* Declare accepting states functions */
+Token funcIL	(rid_char lexeme[]);
 Token funcSL	(rid_char lexeme[]);
 Token funcID	(rid_char lexeme[]);
 Token funcKEY	(rid_char lexeme[]);
 Token funcErr	(rid_char lexeme[]);
+Token funcFloat(rid_char lexeme[]);
 
 /* 
  * Accepting function (action) callback table (array) definition 
@@ -188,14 +223,17 @@ Token funcErr	(rid_char lexeme[]);
 
 /* TO_DO: Define final state table */
 static PTR_ACCFUN finalStateTable[] = {
-	NULL,		/* -    [00] */
-	NULL,		/* -    [01] */
-	funcID,		/* MNID	[02] */
-	funcKEY,	/* KEY  [03] */
-	NULL,		/* -    [04] */
-	funcSL,		/* SL   [05] */
-	funcErr,	/* ERR1 [06] */
-	funcErr		/* ERR2 [07] */
+	NULL,		/* -      [00] */
+	NULL,		/* -      [01] */
+	funcID,		/* MNID	  [02] */
+	NULL,		/* -      [04] */
+	funcSL,		/* SL     [05] */
+	funcErr,	/* ERR1   [06] */
+	funcErr,	/* ERR2   [07] */
+	NULL,		/* -      [08] */
+	funcIL,     /* INTL   [09] */
+	NULL,		/* -      [10] */
+	funcFloat   /* FLT_PT [11]*/
 };
 
 /*
@@ -204,10 +242,10 @@ Language keywords
 -------------------------------------------------
 */
 
-/* TO_DO: Define the number of Keywords from the language */
+/* TO_DO: Define the number of Keywords from the language
 #define KWT_SIZE 10
 
-/* TO_DO: Define the list of keywords */
+ TO_DO: Define the list of keywords 
 static rid_char* keywordTable[KWT_SIZE] = {
 	"data",
 	"code",
@@ -220,7 +258,28 @@ static rid_char* keywordTable[KWT_SIZE] = {
 	"while",
 	"do"
 };
+*/
+#define KWT_SIZE 17
 
+static rid_char* keywordTable[KWT_SIZE] = {
+	"if",
+	"else",
+	"do",
+	"while",
+	"int",
+	"float",
+	"double",
+	"string",
+	"is",
+	"if",
+	"return",
+	"break",
+	"def",
+	"or",
+	"and",
+	"true",
+	"false"
+};
 /* NEW SECTION: About indentation */
 
 /*
