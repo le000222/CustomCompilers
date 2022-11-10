@@ -40,36 +40,37 @@
 #define NUM_LEN 5     /* maximum number of digits for IL */
 #define FLT_PT_LEN 6  /* maximum number of digits for FLT_PT */
 #define RTE_CODE 1    /* Value for run-time error */
+#define RID_SUCCESS 0
 
 /* TO_DO: Define Token codes - Create your token classes */
 enum TOKENS {
 	ERR_T,		/*  0: Error token */
 	MNID_T,		/*  1: Method name identifier token (start: &) */
 	STR_T,		/*  2: String literal token */
-	LPR_T,		/*  3: Left parenthesis token */
-	RPR_T,		/*  4: Right parenthesis token */
-	LBR_T,		/*  5: Left brace token */
-	RBR_T,		/*  6: Right brace token */
+	LBRACK_T,		/*  3: Left parenthesis token */
+	RBRACK_T,		/*  4: Right parenthesis token */
+	LPAREN_T,		/*  5: Left brace token */
+	RPAREN_T,		/*  6: Right brace token */
 	KW_T,		/*  7: Keyword token */
 	EOS_T,		/*  8: End of statement (semicolon) */
 	RTE_T,		/*  9: Run-time error token */
 	INL_T,		/* 10: Integer literal token */
-	FLT_PT_T,   /* 11*/
+	RID_FLT_PT_T,   /* 11*/
 	VAR_T,		/* 12: Variable name Identifier */
 	ASSIGN_T,	/* 13: Assignment operator Identifier */
 	LESS_T,     /* 14: Less than operator */
 	GTR_T,		/* 15: Greater than operator */
-	MIN_T,		/* 16: Subtraction operator */
-	PLUS_T,		/* 17: Addition Operator */
-	MUL_T,		/* 18: Multpily operator */
+	SUBTRACT_T,		/* 16: Subtraction operator */
+	ADDITION_T,		/* 17: Addition Operator */
+	MULTIPLY_T,		/* 18: Multpily operator */
 	DIV_T,		/* 19: Division operator */
 	ARG_SEP_T,	/* 20: Argument seperator */
-	EQUAL_T,	/* 21: Equal (to check if values are equal) */
-	COMM_T,		/* 22: Comments */
+	EQUAL_TO_T,	/* 21: Equal (to check if values are equal) */
+	COMM_T,		/* 22: Comments (no tokens created for comments)*/
 	NOT_EQ_T,	/* 23: Not Equal token */
-	AND_T,		/* 24: Logical and & */
-	OR_T,		/* 25: Logical OR | */
-	NOT_T,		/* 26: Logical not ! */
+	AND_OP_T,		/* 24: Logical and & */
+	OR_OP_T,		/* 25: Logical OR | */
+	NOT_OP_T,		/* 26: Logical not ! */
 	SEOF_T		/* 27: Source end-of-file token */
 };
 
@@ -136,7 +137,7 @@ typedef struct Token {
 #define ESNR	102		/* Error state with no retract */
 
  /* TO_DO: State transition table definition */
-#define TABLE_COLUMNS 10
+#define TABLE_COLUMNS 12
 
 /* TO_DO: Transition table - type of states defined in separate table
 static rid_int transitionTable[][TABLE_COLUMNS] = {
@@ -154,19 +155,21 @@ static rid_int transitionTable[][TABLE_COLUMNS] = {
 */
 static rid_int transitionTable[][TABLE_COLUMNS] = {
 /*
-   [A-z] , [0-9], ' _ ',  ' ( ',    ' " ',  SEOF, other, 
+   [A-z] , [0-9], ' _ ',  ' ( ',    ' " ',  SEOF, other,    dot
    RC(0),  RI(1), US(2), LPAREN(3), RS(4),  E(5),  O(6),    P(7)		*/
-{    1,      7,     1,    ESNR,        3,   ESWR,   ESNR,   ESNR}, // S0: NOAS
-{    1,      1,     1,       2,     ESNR,   ESWR,      2,   ESNR}, // S1: NOAS
-{   FS,     FS,     FS,     FS,       FS,     FS,     FS,	  FS}, // S2: ASWR (MVID) or (KEY) or (VAR)
-{    3,      3,      3,      3,        4,   ESWR,      3,	   3}, // S4: NOAS
-{   FS,     FS,     FS,     FS,       FS,     FS,     FS,	  FS}, // S5: ASNR (SL)
-{   FS,     FS,     FS,     FS,       FS,     FS,     FS,	  FS}, // S6: ASNR (ES)
-{   FS,     FS,     FS,     FS,       FS,     FS,     FS,	  FS}, // S7: ASWR (ER)
-{    3,      7,   ESNR,      3,     ESNR,   ESWR,      8,	   9}, // S8: NOAS 
-{   FS,     FS,    FS,      FS,       FS,     FS,     FS,	  FS}, // S9: ASNR (IL)
-{ ESNR,      9,  ESNR,    ESNR,     ESNR,   ESWR,     10,   ESNR}, // S10: NOAS
-{   FS,     FS,    FS,      FS,       FS,     FS,     FS,	  FS}  // S11: ASNR (FLT_PT)
+{    1,      7,     12,   ESNR,        3,   ESWR,  ESNR,   ESNR}, // S00: NOAS
+{    1,      1,      2,      2,     ESNR,   ESWR,    12,     11}, // S01: NOAS
+{   FS,     FS,     FS,     FS,       FS,     FS,    FS,     FS}, // S02: ASWR (KEY) or (METHOD)
+{    3,      3,      3,      3,        4,   ESWR,     3,	  3}, // S03: NOAS
+{   FS,     FS,     FS,     FS,       FS,     FS,     FS,	 FS}, // S04: ASNR (SL)
+{   FS,     FS,     FS,     FS,       FS,     FS,     FS,    FS}, // S05: ASNR (ES)
+{   FS,     FS,     FS,     FS,       FS,     FS,     FS,    FS}, // S06: ASWR (ER)
+{   11,      7,     11,      8,       11,   ESWR,      8,     9}, // S07: NOAS 
+{   FS,     FS,     FS,     FS,       FS,     FS,     FS,    FS}, // S08: ASNR (IL)
+{   11,      9,		11,     11,       11,   ESWR,     10,    11}, // S09: NOAS
+{   FS,     FS,     FS,     FS,       FS,     FS,     FS,    FS}, // S10: ASNR (RID_FLOAT)
+{   11,     11,     11,		 6,       11,   ESWR,      6,    11}, // S11: NOAS error tokens
+{   FS,     FS,     FS,     FS,       FS,     FS,     FS,    FS}  // S12: ASWR KEY or VAR 
 };
 /* Define accepting states types */
 #define NOFS	0		/* not accepting state */
@@ -177,15 +180,17 @@ static rid_int transitionTable[][TABLE_COLUMNS] = {
 static rid_int stateType[] = {
 	NOFS, /* 00 */
 	NOFS, /* 01 */
-	FSWR, /* 02 (MID),(VAR),(KEY) - Methods, Variables, keys */
-	NOFS, /* 04 */
-	FSNR, /* 05 (SL) */
-	FSNR, /* 06 (Err1 - no retract) */
-	FSWR, /* 07 (Err2 - retract) */
-	NOFS, /* 08 */
-	FSNR, /* 09 (INT L) - Integer literal */
-	NOFS, /* 10 */
-	FSNR  /* 11 (FLT_PT) Floating point */
+	FSWR, /* 02 (KEY),(METHOD) - keys, Methods */
+	NOFS, /* 03 */
+	FSNR, /* 04 (SL) */
+	FSNR, /* 05 (Err1 - no retract) */
+	FSWR, /* 06 (Err2 - retract) */
+	NOFS, /* 07 */
+	FSWR, /* 08 (INT L) - Integer literal */
+	NOFS, /* 09 */
+	FSWR, /* 10 (FLT_PT) Floating point */
+	NOFS, /* 11 */
+	FSWR  /* 12 ( KEY OR VAR )*/
 };
 
 /*
@@ -214,7 +219,8 @@ Token funcSL	(rid_char lexeme[]);
 Token funcID	(rid_char lexeme[]);
 Token funcKEY	(rid_char lexeme[]);
 Token funcErr	(rid_char lexeme[]);
-Token funcFloat(rid_char lexeme[]);
+Token funcFloat (rid_char lexeme[]);
+Token funcVAR   (rid_char lexeme[]);
 
 /* 
  * Accepting function (action) callback table (array) definition 
@@ -223,17 +229,19 @@ Token funcFloat(rid_char lexeme[]);
 
 /* TO_DO: Define final state table */
 static PTR_ACCFUN finalStateTable[] = {
-	NULL,		/* -      [00] */
-	NULL,		/* -      [01] */
-	funcID,		/* MNID	  [02] */
-	NULL,		/* -      [04] */
-	funcSL,		/* SL     [05] */
-	funcErr,	/* ERR1   [06] */
-	funcErr,	/* ERR2   [07] */
-	NULL,		/* -      [08] */
-	funcIL,     /* INTL   [09] */
-	NULL,		/* -      [10] */
-	funcFloat   /* FLT_PT [11]*/
+	NULL,		/* -			[00] */
+	NULL,		/* -			[01] */
+	funcID,     /*KEY or METHOD	[02] */
+	NULL,		/* -			[03] */
+	funcSL,		/* SL			[04] */
+	funcErr,	/* ERR1			[05] */
+	funcErr,	/* ERR2			[06] */
+	NULL,		/* -			[07] */
+	funcIL,     /* INTL			[08] */
+	NULL,		/* -			[09] */
+	funcFloat,  /* FLT_PT		[10] */
+	NULL,		/* -			[11] */
+	funcVAR		/* KEY or VAR   [12] */
 };
 
 /*

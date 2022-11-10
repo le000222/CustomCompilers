@@ -1,15 +1,30 @@
-<! RID Example 3:
-Volume of a sphere !>
+123456789123456789123456789123456789123456789123456789
+123main();
+user123;
+12acb36.25;
+123456789;
+123user;
+if();
+main();
+
+<! BOA Example 4:
+  Testing numbers (ex: factorial) !>
 main() {
-	Public {
-		double PI, r, Vol;
-	}
-	calculate() {
-		PI = 3.14;
-		input(r);
-		Vol = 4.0 / 3.0 * PI * (r * r * r);
-		print(Vol);
-		<>
-	}
-	print('Good Job Team!!');
+    data {
+        int i, n, f;
+    }
+    code() {
+        f=1;
+        i=1;
+	// Prints a message to the user
+        print('Write a number:');
+        input(n);
+        while (i<n) do {
+            f = f * i;
+            i = i + 1;
+        };
+        print('Factorial:');
+        print(f);
+    }
 }
+
