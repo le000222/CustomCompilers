@@ -11,13 +11,13 @@
 ************************************************************
 * File name: mainScanner.c
 * Compiler: MS Visual Studio 2022
-* Author: Paulo Sousa
+* Author: [Ngoc Phuong Khanh Le, 041004318], [Dan McCue, 040772626]
 * Course: CST 8152 – Compilers, Lab Section: [011, 012, 013]
 * Assignment: A22, A32.
 * Date: Jul 01 2022
 * Professor: Paulo Sousa
 * Purpose: This file is the main code for Scanner (A22)
-* Function list: (...).
+* Function list: printScannerError(), displayScanner(), getScannerFilesize(), mainScanner();
 ************************************************************
 */
 

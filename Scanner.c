@@ -2,7 +2,7 @@
 ************************************************************
 * COMPILERS COURSE - Algonquin College
 * Code version: Summer, 2022
-* Author: Svillen Ranev - Paulo Sousa
+* Author: Ngoc Phuong Khanh Le - Dan McCue
 * Professors: Paulo Sousa
 ************************************************************
 */
@@ -11,13 +11,13 @@
 ************************************************************
 * File name: scanner.h
 * Compiler: MS Visual Studio 2022
-* Author: Paulo Sousa
-* Course: CST 8152 – Compilers, Lab Section: [011, 012, 013]
+* Author: [Ngoc Phuong Khanh Le, 041004318], [Dan McCue, 040772626]
+* Course: CST 8152 – Compilers, Lab Section: [301]
 * Assignment: A22, A32.
 * Date: Jul 01 2022
 * Professor: Paulo Sousa
 * Purpose: This file contains all functionalities from Scanner.
-* Function list: (...).
+* Function list: startScanner(), tokenizer(), nextState(), nextClass(), funcIL(), funcID(), funcMED(), funcFloat(), funcSL(), funcKEY(), funcErr(), funcVAR(), printToken().
 ************************************************************
 */
 
@@ -115,7 +115,6 @@ Token tokenizer(void) {
 
 	rid_int lexLength;			/* token length */
 	rid_int i;					/* counter */
-	rid_char newc;				/* new char */
 	
 	while (1) { /* endless loop broken by token returns it will generate a warning */
 		c = readerGetChar(sourceBuffer);
@@ -246,16 +245,16 @@ Token tokenizer(void) {
 			currentToken.code = EOS_T;
 			return currentToken;
 		case '(':
-			currentToken.code = LBRACK_T;
-			return currentToken;
-		case ')':
-			currentToken.code = RBRACK_T;
-			return currentToken;
-		case '{':
 			currentToken.code = LPAREN_T;
 			return currentToken;
-		case '}':
+		case ')':
 			currentToken.code = RPAREN_T;
+			return currentToken;
+		case '{':
+			currentToken.code = LBRACK_T;
+			return currentToken;
+		case '}':
+			currentToken.code = RBRACK_T;
 			return currentToken;
 		/* Cases for END OF FILE */
 		case CHARSEOF0:
@@ -421,13 +420,22 @@ Token funcIL(rid_char lexeme[]) {
 	}
 	else {
 		currentToken = funcErr(lexeme);
-		return currentToken;
 	}
 
 	return currentToken;
-
 }
-Token funcFloat(rid_char lexeme[]) {
+
+/*
+  ************************************************************
+  * Acceptance State Function Floating point
+  *		Function responsible to identify FP (floating points).
+  * - It is necessary respect the limit (ex: 4-byte integer in C).
+  * - In the case of larger lexemes, error shoul be returned.
+  * - Only first ERR_LEN characters are accepted and eventually,
+  *   additional three dots (...) should be put in the output.
+  ***********************************************************
+  */
+Token funcFLOAT(rid_char lexeme[]) {
 	Token currentToken = { 0 };
 	rid_float tfloat;
 	if (lexeme[0] != '\0' && strlen(lexeme) > FLT_PT_LEN) {
@@ -441,11 +449,8 @@ Token funcFloat(rid_char lexeme[]) {
 	}
 	else {
 		currentToken = funcErr(lexeme);
-		return currentToken;
 	}
-
 	return currentToken;
-
 }
 
 
@@ -466,8 +471,6 @@ Token funcFloat(rid_char lexeme[]) {
 Token funcID(rid_char lexeme[]) {
 	Token currentToken = { 0 };
 	size_t length = strlen(lexeme);
-	rid_int isID = RID_FALSE;
-	rid_char lastch;
 
 	currentToken = funcKEY(lexeme);
 	if (currentToken.code == KW_T) {
@@ -539,6 +542,12 @@ Token funcKEY(rid_char lexeme[]) {
 	return currentToken;
 }
 
+/*
+************************************************************
+ * This function checks if one specific lexeme is a varible.
+ * - Tip: Remember to use the keywordTable to check the keywords.
+ ***********************************************************
+ */
 Token funcVAR(rid_char lexeme[]) {
 	Token currentToken = { 0 };
 	size_t length = strlen(lexeme);
@@ -613,6 +622,15 @@ rid_void printToken(Token t) {
 	case VAR_T:
 		printf("VAR_T\t\t%s\n", t.attribute.idLexeme);
 		break;
+	case KW_T:
+		printf("KW_T\t\t%s\n", keywordTable[t.attribute.codeType]);
+		break;
+	case INL_T:
+		printf("INL_T\t\t%d\n", t.attribute.intValue);
+		break;
+	case RID_FLT_PT_T:
+		printf("RID_FLT_PT_T\t%.2f\n", t.attribute.floatValue);
+		break;
 	case STR_T:
 		printf("STR_T\t\t%d\t ", (rid_int)t.attribute.codeType);
 		printf("%s\n", readerGetContent(stringLiteralTable, (rid_int)t.attribute.codeType));
@@ -632,14 +650,8 @@ rid_void printToken(Token t) {
 	case ASSIGN_T:
 		printf("ASSIGN_T\t%c\n", '=');
 		break;
-	case KW_T:
-		printf("KW_T\t\t%s\n", keywordTable[t.attribute.codeType]);
-		break;
 	case EOS_T:
 		printf("EOS_T\t\t%c\n", ';');
-		break;
-	case INL_T:
-		printf("INL_T\t\t%d\n",t.attribute.intValue);
 		break;
 	case COMM_T:
 		printf("COMM_T\n");
@@ -679,9 +691,6 @@ rid_void printToken(Token t) {
 		break;
 	case OR_OP_T:
 		printf("OR_OP_T\t\t%c\n", '|');
-		break;
-	case RID_FLT_PT_T:
-		printf("RID_FLT_PT_T\t%.2f\n", t.attribute.floatValue);
 		break;
 	default:
 		printf("Scanner error: unknown token code: %d\n", t.code);

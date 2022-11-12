@@ -9,7 +9,7 @@
       "name": "RidCompiler.exe",
       "args": [
         "S",
-        "README.txt ",
+        "INPUT4_Datatypes.de ",
         "a ",
         "10 ",
         "10 "

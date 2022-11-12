@@ -1,0 +1,22 @@
+<! BOA Example 4:
+  Testing numbers (ex: factorial) !>
+main() {
+    data {
+        int i12, n.7, f_num;
+    }
+    code {
+		if(n == 1) {
+			print('Haha it is 1');
+		}
+        f=1;
+        i=1;
+        print('Write a number:');
+        input(n);
+        while (i<n) do {
+            f = f * i;
+            i = i + 1;
+        };
+        print('Factorial:');
+        print(f);
+    }
+}

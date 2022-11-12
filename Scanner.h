@@ -11,7 +11,7 @@
 ************************************************************
 * File name: scanner.h
 * Compiler: MS Visual Studio 2022
-* Author: Paulo Sousa
+* Author: [Ngoc Phuong Khanh Le, 041004318], [Dan McCue, 040772626]
 * Course: CST 8152 – Compilers, Lab Section: [011, 012, 013]
 * Assignment: A22, A32.
 * Date: Jul 01 2022
@@ -40,38 +40,38 @@
 #define NUM_LEN 5     /* maximum number of digits for IL */
 #define FLT_PT_LEN 6  /* maximum number of digits for FLT_PT */
 #define RTE_CODE 1    /* Value for run-time error */
-#define RID_SUCCESS 0
+#define RID_SUCCESS 0 /* Value for sucessful execution */
 
 /* TO_DO: Define Token codes - Create your token classes */
 enum TOKENS {
-	ERR_T,		/*  0: Error token */
-	MNID_T,		/*  1: Method name identifier token (start: &) */
-	STR_T,		/*  2: String literal token */
-	LBRACK_T,		/*  3: Left parenthesis token */
-	RBRACK_T,		/*  4: Right parenthesis token */
-	LPAREN_T,		/*  5: Left brace token */
-	RPAREN_T,		/*  6: Right brace token */
-	KW_T,		/*  7: Keyword token */
-	EOS_T,		/*  8: End of statement (semicolon) */
-	RTE_T,		/*  9: Run-time error token */
-	INL_T,		/* 10: Integer literal token */
-	RID_FLT_PT_T,   /* 11*/
-	VAR_T,		/* 12: Variable name Identifier */
-	ASSIGN_T,	/* 13: Assignment operator Identifier */
-	LESS_T,     /* 14: Less than operator */
-	GTR_T,		/* 15: Greater than operator */
+	ERR_T,			/*  0: Error token */
+	MNID_T,			/*  1: Method name identifier token */
+	STR_T,			/*  2: String literal token */
+	LBRACK_T,		/*  3: Left brace token */
+	RBRACK_T,		/*  4: Right brace token */
+	LPAREN_T,		/*  5: Left parenthesis token */
+	RPAREN_T,		/*  6: Right parenthesis token */
+	KW_T,			/*  7: Keyword token */
+	EOS_T,			/*  8: End of statement (semicolon) */
+	RTE_T,			/*  9: Run-time error token */
+	INL_T,			/* 10: Integer literal token */
+	RID_FLT_PT_T,   /* 11: Floating points token*/
+	VAR_T,			/* 12: Variable name Identifier */
+	ASSIGN_T,		/* 13: Assignment operator Identifier */
+	LESS_T,			/* 14: Less than operator */
+	GTR_T,			/* 15: Greater than operator */
 	SUBTRACT_T,		/* 16: Subtraction operator */
 	ADDITION_T,		/* 17: Addition Operator */
 	MULTIPLY_T,		/* 18: Multpily operator */
-	DIV_T,		/* 19: Division operator */
-	ARG_SEP_T,	/* 20: Argument seperator */
-	EQUAL_TO_T,	/* 21: Equal (to check if values are equal) */
-	COMM_T,		/* 22: Comments (no tokens created for comments)*/
-	NOT_EQ_T,	/* 23: Not Equal token */
+	DIV_T,			/* 19: Division operator */
+	ARG_SEP_T,		/* 20: Argument seperator */
+	EQUAL_TO_T,		/* 21: Equal (to check if values are equal) */
+	COMM_T,			/* 22: Comments (no tokens created for comments)*/
+	NOT_EQ_T,		/* 23: Not Equal token */
 	AND_OP_T,		/* 24: Logical and & */
 	OR_OP_T,		/* 25: Logical OR | */
 	NOT_OP_T,		/* 26: Logical not ! */
-	SEOF_T		/* 27: Source end-of-file token */
+	SEOF_T			/* 27: Source end-of-file token */
 };
 
 /* TO_DO: Operators token attributes */
@@ -82,26 +82,26 @@ typedef enum SourceEndOfFile { SEOF_0, SEOF_255 } EofOperator;
 
 /* TO_DO: Data structures for declaring the token and its attributes */
 typedef union TokenAttribute {
-	rid_int codeType;      /* integer attributes accessor */
+	rid_int codeType;					/* integer attributes accessor */
 	AriOperator arithmeticOperator;		/* arithmetic operator attribute code */
 	RelOperator relationalOperator;		/* relational operator attribute code */
 	LogOperator logicalOperator;		/* logical operator attribute code */
 	EofOperator seofType;				/* source-end-of-file attribute code */
-	rid_int intValue;						/* integer literal attribute (value) */
-	rid_int keywordIndex;					/* keyword index in the keyword table */
+	rid_int intValue;					/* integer literal attribute (value) */
+	rid_int keywordIndex;				/* keyword index in the keyword table */
 	rid_int contentString;				/* string literal offset from the beginning of the string literal buffer (stringLiteralTable->content) */
-	rid_float floatValue;					/* floating-point literal attribute (value) */
+	rid_float floatValue;				/* floating-point literal attribute (value) */
 	rid_char idLexeme[VID_LEN + 1];		/* variable identifier token attribute */
-	rid_char errLexeme[ERR_LEN + 1];		/* error token attribite */
+	rid_char errLexeme[ERR_LEN + 1];	/* error token attribite */
 } TokenAttribute;
 
 /* TO_DO: Should be used if no symbol table is implemented */
 typedef struct idAttibutes {
 	rid_byte flags;			/* Flags information */
 	union {
-		rid_int intValue;				/* Integer value */
-		rid_float floatValue;			/* Float value */
-		rid_char* stringContent;		/* String value */
+		rid_int intValue;			/* Integer value */
+		rid_float floatValue;		/* Float value */
+		rid_char* stringContent;	/* String value */
 	} values;
 } IdAttibutes;
 
@@ -112,7 +112,7 @@ typedef struct Token {
 	IdAttibutes   idAttribute;	/* not used in this scanner implementation - for further use */
 } Token;
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 /* EOF definitions */
 #define CHARSEOF0 '\0'
@@ -139,26 +139,13 @@ typedef struct Token {
  /* TO_DO: State transition table definition */
 #define TABLE_COLUMNS 12
 
-/* TO_DO: Transition table - type of states defined in separate table
-static rid_int transitionTable[][TABLE_COLUMNS] = {
-  [A-z] , [0-9],    _,    &,    ", SEOF, other
-	   L(0),  D(1), U(2), M(3), Q(4), E(5),  O(6)
-	{     1,  ESNR,    1,    2, ESNR, ESWR, ESNR}, // S0: NOAS
-	{     1,     1,    1,    2, ESNR, ESWR,    3}, // S1: NOAS
-	{    FS,    FS,   FS,   FS,   FS,   FS,   FS}, // S2: ASNR (MVID)
-	{    FS,    FS,   FS,   FS,   FS,   FS,   FS}, // S3: ASWR (KEY)
-	{     4,     4,    4,    4,    5, ESWR,    4}, // S4: NOAS
-	{    FS,    FS,   FS,   FS,   FS,   FS,   FS}, // S5: ASNR (SL)
-	{    FS,    FS,   FS,   FS,   FS,   FS,   FS}, // S6: ASNR (ES)
-	{    FS,    FS,   FS,   FS,   FS,   FS,   FS}  // S7: ASWR (ER)
-};
-*/
+/* TO_DO: Transition table - type of states defined in separate table */
 static rid_int transitionTable[][TABLE_COLUMNS] = {
 /*
-   [A-z] , [0-9], ' _ ',  ' ( ',    ' " ',  SEOF, other,    dot
+   [A-z] , [0-9], ' _ ',  ' ( ',    ' " ',  SEOF, other,    period
    RC(0),  RI(1), US(2), LPAREN(3), RS(4),  E(5),  O(6),    P(7)		*/
-{    1,      7,     12,   ESNR,        3,   ESWR,  ESNR,   ESNR}, // S00: NOAS
-{    1,      1,      2,      2,     ESNR,   ESWR,    12,     11}, // S01: NOAS
+{    1,      7,      1,   ESNR,        3,   ESWR,  ESNR,   ESNR}, // S00: NOAS
+{    1,      1,      1,      2,     ESNR,   ESWR,    12,     11}, // S01: NOAS
 {   FS,     FS,     FS,     FS,       FS,     FS,    FS,     FS}, // S02: ASWR (KEY) or (METHOD)
 {    3,      3,      3,      3,        4,   ESWR,     3,	  3}, // S03: NOAS
 {   FS,     FS,     FS,     FS,       FS,     FS,     FS,	 FS}, // S04: ASNR (SL)
@@ -202,7 +189,7 @@ TO_DO: Adjust your functions'definitions
 /* Static (local) function  prototypes */
 rid_int startScanner(ReaderPointer psc_buf);
 static rid_int nextClass(rid_char c);			/* character class function */
-static rid_int nextState(rid_int, rid_char);		/* state machine function */
+static rid_int nextState(rid_int, rid_char);	/* state machine function */
 
 /*
 -------------------------------------------------
@@ -219,7 +206,7 @@ Token funcSL	(rid_char lexeme[]);
 Token funcID	(rid_char lexeme[]);
 Token funcKEY	(rid_char lexeme[]);
 Token funcErr	(rid_char lexeme[]);
-Token funcFloat (rid_char lexeme[]);
+Token funcFLOAT (rid_char lexeme[]);
 Token funcVAR   (rid_char lexeme[]);
 
 /* 
@@ -239,7 +226,7 @@ static PTR_ACCFUN finalStateTable[] = {
 	NULL,		/* -			[07] */
 	funcIL,     /* INTL			[08] */
 	NULL,		/* -			[09] */
-	funcFloat,  /* FLT_PT		[10] */
+	funcFLOAT,  /* FLT_PT		[10] */
 	NULL,		/* -			[11] */
 	funcVAR		/* KEY or VAR   [12] */
 };
@@ -253,20 +240,7 @@ Language keywords
 /* TO_DO: Define the number of Keywords from the language
 #define KWT_SIZE 10
 
- TO_DO: Define the list of keywords 
-static rid_char* keywordTable[KWT_SIZE] = {
-	"data",
-	"code",
-	"int",
-	"real",
-	"string",
-	"if",
-	"then",
-	"else",
-	"while",
-	"do"
-};
-*/
+ TO_DO: Define the list of keywords */
 #define KWT_SIZE 17
 
 static rid_char* keywordTable[KWT_SIZE] = {
@@ -279,10 +253,10 @@ static rid_char* keywordTable[KWT_SIZE] = {
 	"double",
 	"string",
 	"is",
-	"if",
+	"def",
 	"return",
 	"break",
-	"def",
+	"continue",
 	"or",
 	"and",
 	"true",
