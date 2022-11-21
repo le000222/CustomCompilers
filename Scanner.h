@@ -55,7 +55,7 @@ enum TOKENS {
 	EOS_T,		/*  8: End of statement (semicolon) */
 	RTE_T,		/*  9: Run-time error token */
 	INL_T,		/* 10: Integer literal token */
-	RID_FLT_PT_T,   /* 11*/
+	FLT_PT_T,   /* 11*/
 	VAR_T,		/* 12: Variable name Identifier */
 	ASSIGN_T,	/* 13: Assignment operator Identifier */
 	LESS_T,     /* 14: Less than operator */
@@ -157,8 +157,8 @@ static rid_int transitionTable[][TABLE_COLUMNS] = {
 /*
    [A-z] , [0-9], ' _ ',  ' ( ',    ' " ',  SEOF, other,    dot
    RC(0),  RI(1), US(2), LPAREN(3), RS(4),  E(5),  O(6),    P(7)		*/
-{    1,      7,     12,   ESNR,        3,   ESWR,  ESNR,   ESNR}, // S00: NOAS
-{    1,      1,      2,      2,     ESNR,   ESWR,    12,     11}, // S01: NOAS
+{    1,      7,      1,   ESNR,        3,   ESWR,  ESNR,   ESNR}, // S00: NOAS
+{    1,      1,      1,      2,     ESNR,   ESWR,    12,     11}, // S01: NOAS
 {   FS,     FS,     FS,     FS,       FS,     FS,    FS,     FS}, // S02: ASWR (KEY) or (METHOD)
 {    3,      3,      3,      3,        4,   ESWR,     3,	  3}, // S03: NOAS
 {   FS,     FS,     FS,     FS,       FS,     FS,     FS,	 FS}, // S04: ASNR (SL)
@@ -267,7 +267,7 @@ static rid_char* keywordTable[KWT_SIZE] = {
 	"do"
 };
 */
-#define KWT_SIZE 17
+#define KWT_SIZE 14
 
 static rid_char* keywordTable[KWT_SIZE] = {
 	"if",
@@ -276,15 +276,12 @@ static rid_char* keywordTable[KWT_SIZE] = {
 	"while",
 	"int",
 	"float",
-	"double",
+	"continue",
 	"string",
-	"is",
-	"if",
+	"program",
 	"return",
 	"break",
-	"def",
-	"or",
-	"and",
+	"input",
 	"true",
 	"false"
 };

@@ -436,7 +436,7 @@ Token funcFloat(rid_char lexeme[]) {
 	}
 	tfloat = atof(lexeme);
 	if (tfloat >= 0 && tfloat <= LONG_MAX) {
-		currentToken.code = RID_FLT_PT_T;
+		currentToken.code = FLT_PT_T;
 		currentToken.attribute.floatValue = (rid_float)tfloat;
 	}
 	else {
@@ -680,8 +680,8 @@ rid_void printToken(Token t) {
 	case OR_OP_T:
 		printf("OR_OP_T\t\t%c\n", '|');
 		break;
-	case RID_FLT_PT_T:
-		printf("RID_FLT_PT_T\t%.2f\n", t.attribute.floatValue);
+	case FLT_PT_T:
+		printf("FLT_PT_T\t%.2f\n", t.attribute.floatValue);
 		break;
 	default:
 		printf("Scanner error: unknown token code: %d\n", t.code);
