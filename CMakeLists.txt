@@ -11,7 +11,6 @@ project ("RidCompiler")
 add_executable (RidCompiler
 	"Compilers.h"	"Compilers.c"
 	"Reader.h"		"Reader.c"		"MainReader.c"		"MainScanner.c"
-	"Scanner.h"		"Scanner.c"
-)
+	"Scanner.h"		"Scanner.c"		"MainParser.c"		"Parser.c"	"Parser.h" )
 
 # TO_DO: Add tests and install targets if needed.

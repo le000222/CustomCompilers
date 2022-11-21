@@ -84,6 +84,20 @@ build CMakeFiles\RidCompiler.dir\Scanner.c.obj: C_COMPILER__RidCompiler_Debug C$
   TARGET_COMPILE_PDB = CMakeFiles\RidCompiler.dir\
   TARGET_PDB = RidCompiler.pdb
 
+build CMakeFiles\RidCompiler.dir\MainParser.c.obj: C_COMPILER__RidCompiler_Debug C$:\Users\Dan\CST8152-Compilers\CompilersClone\8152-Compilers\MainParser.c || cmake_object_order_depends_target_RidCompiler
+  FLAGS = /DWIN32 /D_WINDOWS /W3 /MDd /Zi /Ob0 /Od /RTC1
+  OBJECT_DIR = CMakeFiles\RidCompiler.dir
+  OBJECT_FILE_DIR = CMakeFiles\RidCompiler.dir
+  TARGET_COMPILE_PDB = CMakeFiles\RidCompiler.dir\
+  TARGET_PDB = RidCompiler.pdb
+
+build CMakeFiles\RidCompiler.dir\Parser.c.obj: C_COMPILER__RidCompiler_Debug C$:\Users\Dan\CST8152-Compilers\CompilersClone\8152-Compilers\Parser.c || cmake_object_order_depends_target_RidCompiler
+  FLAGS = /DWIN32 /D_WINDOWS /W3 /MDd /Zi /Ob0 /Od /RTC1
+  OBJECT_DIR = CMakeFiles\RidCompiler.dir
+  OBJECT_FILE_DIR = CMakeFiles\RidCompiler.dir
+  TARGET_COMPILE_PDB = CMakeFiles\RidCompiler.dir\
+  TARGET_PDB = RidCompiler.pdb
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target RidCompiler
@@ -92,7 +106,7 @@ build CMakeFiles\RidCompiler.dir\Scanner.c.obj: C_COMPILER__RidCompiler_Debug C$
 #############################################
 # Link the executable RidCompiler.exe
 
-build RidCompiler.exe: C_EXECUTABLE_LINKER__RidCompiler_Debug CMakeFiles\RidCompiler.dir\Compilers.c.obj CMakeFiles\RidCompiler.dir\Reader.c.obj CMakeFiles\RidCompiler.dir\MainReader.c.obj CMakeFiles\RidCompiler.dir\MainScanner.c.obj CMakeFiles\RidCompiler.dir\Scanner.c.obj
+build RidCompiler.exe: C_EXECUTABLE_LINKER__RidCompiler_Debug CMakeFiles\RidCompiler.dir\Compilers.c.obj CMakeFiles\RidCompiler.dir\Reader.c.obj CMakeFiles\RidCompiler.dir\MainReader.c.obj CMakeFiles\RidCompiler.dir\MainScanner.c.obj CMakeFiles\RidCompiler.dir\Scanner.c.obj CMakeFiles\RidCompiler.dir\MainParser.c.obj CMakeFiles\RidCompiler.dir\Parser.c.obj
   FLAGS = /DWIN32 /D_WINDOWS /W3 /MDd /Zi /Ob0 /Od /RTC1
   LINK_FLAGS = /machine:x64 /debug /INCREMENTAL /subsystem:console
   LINK_LIBRARIES = kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib

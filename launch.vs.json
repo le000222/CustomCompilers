@@ -8,7 +8,7 @@
       "projectTarget": "RidCompiler.exe",
       "name": "RidCompiler.exe",
       "args": [
-        "S",
+        "P",
         "README.txt ",
         "a ",
         "10 ",
