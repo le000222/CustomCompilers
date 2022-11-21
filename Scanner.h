@@ -55,7 +55,7 @@ enum TOKENS {
 	EOS_T,			/*  8: End of statement (semicolon) */
 	RTE_T,			/*  9: Run-time error token */
 	INL_T,			/* 10: Integer literal token */
-	RID_FLT_PT_T,   /* 11: Floating points token*/
+	FLT_PT_T,   /* 11: Floating points token*/
 	VAR_T,			/* 12: Variable name Identifier */
 	ASSIGN_T,		/* 13: Assignment operator Identifier */
 	LESS_T,			/* 14: Less than operator */
@@ -241,7 +241,7 @@ Language keywords
 #define KWT_SIZE 10
 
  TO_DO: Define the list of keywords */
-#define KWT_SIZE 17
+#define KWT_SIZE 14
 
 static rid_char* keywordTable[KWT_SIZE] = {
 	"if",
@@ -250,19 +250,15 @@ static rid_char* keywordTable[KWT_SIZE] = {
 	"while",
 	"int",
 	"float",
-	"double",
+	"continue",
 	"string",
-	"is",
-	"def",
+	"program",
 	"return",
 	"break",
-	"continue",
-	"or",
-	"and",
+	"input",
 	"true",
 	"false"
-};
-/* NEW SECTION: About indentation */
+};/* NEW SECTION: About indentation */
 
 /*
  * Scanner attributes to be used (ex: including: intendation data

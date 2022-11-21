@@ -1,15 +1,18 @@
+123abc();
+1 == 2;
+<>
+0.123
+!
 <! BOA Example 4:
   Testing numbers (ex: factorial) !>
 main() {
     data {
-        int i12, n.7, f_num;
+        int i, n, Vol_num0;
     }
-    code {
-		if(n == 1) {
-			print('Haha it is 1');
-		}
+    code() {
         f=1;
         i=1;
+	// Prints a message to the user
         print('Write a number:');
         input(n);
         while (i<n) do {
@@ -20,3 +23,4 @@ main() {
         print(f);
     }
 }
+

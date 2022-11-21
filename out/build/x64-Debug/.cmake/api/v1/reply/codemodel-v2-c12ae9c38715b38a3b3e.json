@@ -49,8 +49,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "C:/Users/phuon/OneDrive - Algonquin College/8152-Compilers/Compilers Git/8152-Compilers/out/build/x64-Debug",
-		"source" : "C:/Users/phuon/OneDrive - Algonquin College/8152-Compilers/Compilers Git/8152-Compilers"
+		"build" : "C:/Users/Dan/CST8152-Compilers/8152-Compilers/out/build/x64-Debug",
+		"source" : "C:/Users/Dan/CST8152-Compilers/8152-Compilers"
 	},
 	"version" : 
 	{

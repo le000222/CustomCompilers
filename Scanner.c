@@ -444,7 +444,7 @@ Token funcFLOAT(rid_char lexeme[]) {
 	}
 	tfloat = atof(lexeme);
 	if (tfloat >= 0 && tfloat <= LONG_MAX) {
-		currentToken.code = RID_FLT_PT_T;
+		currentToken.code = FLT_PT_T;
 		currentToken.attribute.floatValue = (rid_float)tfloat;
 	}
 	else {
@@ -628,8 +628,8 @@ rid_void printToken(Token t) {
 	case INL_T:
 		printf("INL_T\t\t%d\n", t.attribute.intValue);
 		break;
-	case RID_FLT_PT_T:
-		printf("RID_FLT_PT_T\t%.2f\n", t.attribute.floatValue);
+	case FLT_PT_T:
+		printf("FLT_PT_T\t%.2f\n", t.attribute.floatValue);
 		break;
 	case STR_T:
 		printf("STR_T\t\t%d\t ", (rid_int)t.attribute.codeType);
