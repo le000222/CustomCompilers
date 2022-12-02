@@ -95,9 +95,7 @@ Main functions signatures
 */
 rid_int mainReader  (rid_int argc, rid_char** argv);
 rid_int mainScanner (rid_int argc, rid_char** argv);
-/*
-boa_intg mainParser  (boa_intg argc, boa_char** argv);
-*/
+rid_int mainParser  (rid_int argc, rid_char** argv);
 rid_void printLogo();
 
 #endif

@@ -43,9 +43,9 @@
 #define RID_SUCCESS 0
 
 /* TO_DO: Define Token codes - Create your token classes */
-enum TOKENS {
+enum TOKEN_KEYWORDS {
 	ERR_T,		/*  0: Error token */
-	MNID_T,		/*  1: Method name identifier token (start: &) */
+	MNID_T,		/*  1: Method name identifier token (start: ) */
 	STR_T,		/*  2: String literal token */
 	LBRACK_T,		/*  3: Left parenthesis token */
 	RBRACK_T,		/*  4: Right parenthesis token */
@@ -82,22 +82,22 @@ typedef enum SourceEndOfFile { SEOF_0, SEOF_255 } EofOperator;
 
 /* TO_DO: Data structures for declaring the token and its attributes */
 typedef union TokenAttribute {
-	rid_int codeType;      /* integer attributes accessor */
+	rid_int codeType;					/* integer attributes accessor from the token list*/
 	AriOperator arithmeticOperator;		/* arithmetic operator attribute code */
 	RelOperator relationalOperator;		/* relational operator attribute code */
 	LogOperator logicalOperator;		/* logical operator attribute code */
 	EofOperator seofType;				/* source-end-of-file attribute code */
-	rid_int intValue;						/* integer literal attribute (value) */
-	rid_int keywordIndex;					/* keyword index in the keyword table */
+	rid_int intValue;					/* integer literal attribute (value) */
+	rid_int keywordIndex;				/* keyword index in the keyword table */
 	rid_int contentString;				/* string literal offset from the beginning of the string literal buffer (stringLiteralTable->content) */
-	rid_float floatValue;					/* floating-point literal attribute (value) */
+	rid_float floatValue;				/* floating-point literal attribute (value) */
 	rid_char idLexeme[VID_LEN + 1];		/* variable identifier token attribute */
-	rid_char errLexeme[ERR_LEN + 1];		/* error token attribite */
+	rid_char errLexeme[ERR_LEN + 1];	/* error token attribite */
 } TokenAttribute;
 
 /* TO_DO: Should be used if no symbol table is implemented */
 typedef struct idAttibutes {
-	rid_byte flags;			/* Flags information */
+	rid_byte flags;						/* Flags information */
 	union {
 		rid_int intValue;				/* Integer value */
 		rid_float floatValue;			/* Float value */
@@ -267,21 +267,19 @@ static rid_char* keywordTable[KWT_SIZE] = {
 	"do"
 };
 */
-#define KWT_SIZE 14
+#define KWT_SIZE 12
 
 static rid_char* keywordTable[KWT_SIZE] = {
+	"int",
+	"float",
+	"string",
 	"if",
 	"else",
 	"do",
 	"while",
-	"int",
-	"float",
 	"continue",
-	"string",
-	"program",
 	"return",
 	"break",
-	"input",
 	"true",
 	"false"
 };

@@ -58,7 +58,7 @@ extern Token tokenizer();
 extern rid_char* keywordTable[];
 rid_int syntaxErrorNumber = 0;
 
-#define STR_LANGNAME	"rid"
+#define STR_LANGNAME	"RIDEAN"
 #define LANG_WRTE		"print"
 #define LANG_READ		"input"
 #define LANG_MAIN		"main"
@@ -66,18 +66,35 @@ rid_int syntaxErrorNumber = 0;
 /* TO_DO: Create ALL constants for keywords (sequence given in table.h) */
 
 /* Constants */
-enum KEYWORDS {
+enum PARSER_KEYWORDS {
 	NO_ATTR = -1,
-	KW_data,
-	KW_code,
 	KW_int,
-	KW_real,
+	KW_float,
 	KW_string,
 	KW_if,
-	KW_then,
 	KW_else,
+	KW_do,
 	KW_while,
-	KW_do
+	KW_continue,
+	KW_return,
+	KW_break,
+	KW_true,
+	KW_false
+	/*
+	"int",
+	"float",
+	"string",
+	"if",
+	"else",
+	"do",
+	"while",
+	"continue",	
+	"return",
+	"break",
+	"true",
+	"false",
+	*/
+
 };
 
 /* Function definitions */
@@ -85,17 +102,45 @@ rid_void startParser();
 rid_void matchToken(rid_int, rid_int);
 rid_void syncErrorHandler(rid_int);
 rid_void printError();
+rid_void printWarning();
 
 /* TO_DO: Place ALL non-terminal function declarations */
+rid_void bodySession();
 rid_void codeSession();
 rid_void dataSession();
 rid_void optVarListDeclarations();
+rid_void varListDeclarations();
+rid_void varListDeclarationsPrime();
+rid_void varListDeclaration();
+rid_void integerVarlistDeclaration();
+rid_void integerVariableList();
+rid_void integerVariable();
+rid_void floatVariableList();
+rid_void floatVariable();
+rid_void stringVariableList();
+rid_void stringVariable();
+rid_void stringVarlistDeclaration();
+rid_void floatVarlistDeclaration();
+rid_void optionalVarlist();
 rid_void optionalStatements();
 rid_void outputStatement();
+rid_void inputStatement();
+rid_void inputStatements();
+rid_void inputVariableList();
+rid_void variableList();
 rid_void outputVariableList();
 rid_void program();
-rid_void statement();
+rid_void assignmentStatement();
+rid_void assignmentExpression();
+rid_void arithmaticExpression();
+rid_void stringExpression();
+rid_void primaryStringExpression();
+rid_void conditonalExpression();
+rid_void stringExpressionPrime();
+rid_void argumentStatement();
 rid_void statements();
+rid_void statement();
+rid_void iterationStatment();
 rid_void statementsPrime();
 
 #endif

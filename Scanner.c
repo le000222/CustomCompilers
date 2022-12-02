@@ -103,7 +103,7 @@ rid_int startScanner(ReaderPointer psc_buf) {
  ***********************************************************
  */
 
-Token tokenizer(void) {
+Token realTokenizer(void) {
 
 	/* TO_DO: Follow the standard and adjust datatypes */
 
@@ -115,7 +115,6 @@ Token tokenizer(void) {
 
 	rid_int lexLength;			/* token length */
 	rid_int i;					/* counter */
-	rid_char newc;				/* new char */
 	
 	while (1) { /* endless loop broken by token returns it will generate a warning */
 		c = readerGetChar(sourceBuffer);
@@ -434,7 +433,7 @@ Token funcFloat(rid_char lexeme[]) {
 		currentToken = funcErr(lexeme);
 		return currentToken;
 	}
-	tfloat = atof(lexeme);
+	tfloat = (float)atof(lexeme);
 	if (tfloat >= 0 && tfloat <= LONG_MAX) {
 		currentToken.code = FLT_PT_T;
 		currentToken.attribute.floatValue = (rid_float)tfloat;
@@ -467,7 +466,6 @@ Token funcID(rid_char lexeme[]) {
 	Token currentToken = { 0 };
 	size_t length = strlen(lexeme);
 	rid_int isID = RID_FALSE;
-	rid_char lastch;
 
 	currentToken = funcKEY(lexeme);
 	if (currentToken.code == KW_T) {
@@ -688,6 +686,11 @@ rid_void printToken(Token t) {
 	}
 }
 
+Token tokenizer(void) {
+	Token token = realTokenizer();
+	printToken(token);
+	return token;
+}
 /*
 TO_DO: (If necessary): HERE YOU WRITE YOUR ADDITIONAL FUNCTIONS (IF ANY).
 */
