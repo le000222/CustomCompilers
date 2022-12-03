@@ -5,18 +5,19 @@
 * Author: Svillen Ranev - Paulo Sousa
 * Professors: Paulo Sousa
 ************************************************************
- _________________________________
-|                                 |
-| ........ rid LANGUAGE ......... |
-|     __    __    __    __        |
-|    /  \  /  \  /  \  /  \       |
-| __/  __\/  __\/  __\/  __\__    |
-| _/  /__/  /__/  /__/  /_____|   |
-|  \_/ \   / \   / \   / \  \___  |
-|       \_/   \_/   \_/   \___o_> |
-|                                 |
-| .. ALGONQUIN COLLEGE - 2022F .. |
-|_________________________________|
+ _____________________________________
+|                                    |
+| ....... 'RID' LANGUAGE ........    |
+|    _____    _______    _____       |
+|   ||   \\    || ||    ||    \\     |
+|   ||    \\   || ||    ||     \\    |
+|   || ___//   || ||    ||      \\   |
+|   ||  \\     || ||    ||      //   |
+|   ||   \\    || ||    ||     //    |
+| __||__  \\___||_||____||____//     |
+|                                    |
+|  .. ALGONQUIN COLLEGE - 2022F ..   |
+|____________________________________|
 
 */
 
@@ -26,7 +27,7 @@
 * Compiler: MS Visual Studio 2022
 * Course: CST 8152 – Compilers, Lab Section: [011, 012, 013]
 * Assignment: A32.
-* Date: Sep 01 2022
+* Date: 4 Dec 2022
 * Professor: Paulo Sousa
 * Purpose: This file is the main header for Parser (.h)
 *************************************************************/
@@ -127,7 +128,7 @@ rid_void outputStatement();
 rid_void inputStatement();
 rid_void inputStatements();
 rid_void inputVariableList();
-rid_void variableList();
+rid_void parameterList();
 rid_void outputVariableList();
 rid_void program();
 rid_void assignmentStatement();
@@ -135,12 +136,10 @@ rid_void assignmentExpression();
 rid_void arithmaticExpression();
 rid_void stringExpression();
 rid_void primaryStringExpression();
-rid_void conditonalExpression();
+rid_void conditionalExpression();
 rid_void stringExpressionPrime();
-rid_void argumentStatement();
 rid_void statements();
 rid_void statement();
-rid_void iterationStatment();
 rid_void statementsPrime();
 
 #endif
