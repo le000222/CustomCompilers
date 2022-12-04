@@ -60,7 +60,7 @@
 * Author: Paulo Sousa
 * History/Versions: Ver F22
 * Called functions: mainReader(), mainScanner(), mainParser()
-* Parameters: Command line arguments - argc, argv
+* Paramters: Command line parameters - argc, argv
 * Return value: Status
 * Algorithm: -
 *************************************************************
@@ -114,7 +114,7 @@ rid_int main(int argc, char** argv) {
 * Author: Paulo Sousa
 * History/Versions: Ver F22
 * Called functions: -
-* Parameters: -
+* parameters: -
 * Return value: (Null)
 * Algorithm: -
 *************************************************************

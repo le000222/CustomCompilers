@@ -241,9 +241,9 @@ rid_void bodySession() {
 	switch (lookahead.code) {
 	case KW_T:
 		switch (lookahead.attribute.codeType) {
-		case 0:
-		case 1:
-		case 2:
+		case KW_int:
+		case KW_float:
+		case KW_string:
 			dataSession();
 			break;
 		case KW_while:
@@ -280,13 +280,7 @@ rid_void bodySession() {
  ***********************************************************
  */
 rid_void dataSession() {
-	switch (lookahead.code) {
-	case KW_T:
-		optVarListDeclarations();
-		break;
-	default:
-		;
-	}
+	optVarListDeclarations();
 	printf("%s%s\n", STR_LANGNAME, ": optional variable list parsed");
 
 }
@@ -316,24 +310,14 @@ rid_void optVarListDeclarations() {
  ***********************************************************
  */
 rid_void varListDeclarations() {
-	if (lookahead.code == KW_T) {
-		switch (lookahead.attribute.codeType) {
-		case KW_int:
-		case KW_string:
-		case KW_float:
-			varListDeclaration();
-			break;
-		default:
-			; //MT
-		}
-	}
+	varListDeclaration();
 }
 
 /*
  ************************************************************
  * variable list declaration
- * BNF: <varList_declaration> -> <integerVarlistDeclaration><varListDeclarationsPrime> | <floatVarlistDeclaration><varListDeclarationsPrime> | <stringVarlistDeclaration><varListDeclarationsPrime>
- * FIRST(<opt_varlist_declarations>) = { e, KW_T (KW_int), KW_T (KW_float), KW_T (KW_string)}.
+ * BNF: <varList_declaration> -> <integerVarlistDeclaration><varListDeclarations> | <floatVarlistDeclaration><varListDeclarations> | <stringVarlistDeclaration><varListDeclarations> | ϵ 
+ * FIRST(<opt_varlist_declarations>) = { KW_T (KW_int), KW_T (KW_float), KW_T (KW_string), ϵ }.
  ***********************************************************
  */
 rid_void varListDeclaration() {
@@ -341,43 +325,23 @@ rid_void varListDeclaration() {
 		switch (lookahead.attribute.codeType) {
 		case KW_int:
 			integerVarlistDeclaration();
-			varListDeclarationsPrime();
+			varListDeclarations();
 			break;
 		case KW_float:
 			floatVarlistDeclaration();
-			varListDeclarationsPrime();
+			varListDeclarations();
 			break;
 		case KW_string:
 			stringVarlistDeclaration();
-			varListDeclarationsPrime();
+			varListDeclarations();
 			break;
 		default:
 			;
 		}
 	}
+
 }
 
-/*
- ************************************************************
- * varListDeclarationsPrime
- * BNF: <varListDeclarationsPrime> -> <varlist_declaration> <varlist_declarationsPrime> | ϵ
- * FIRST ( <varListDeclarationsPrime> ) = { KW_T (KW_int), KW_T (KW_float), KW_T (KW_string), ϵ  }.
- ***********************************************************
- */
-rid_void varListDeclarationsPrime() {
-	if (lookahead.code == KW_T) {
-		switch (lookahead.attribute.codeType) {
-		case KW_int:
-		case KW_float:
-		case KW_string:
-			varListDeclaration();
-			varListDeclarationsPrime();
-			break;
-		default:
-			; //MT
-		}
-	}
-}
 
 /*
  ************************************************************
@@ -413,12 +377,6 @@ rid_void integerVariableList() {
 		matchToken(VAR_T, NO_ATTR);
 		integerVariable();
 		break;
-	case ARG_SEP_T:
-		integerVariable();
-		break;
-	case EOS_T:
-		matchToken(EOS_T, NO_ATTR);
-		break;
 	default:
 		printError();
 		printf("variable expected here\n");
@@ -438,10 +396,13 @@ rid_void integerVariable() {
 		matchToken(ASSIGN_T, NO_ATTR);
 		switch (lookahead.code) {
 		case INL_T:
-			matchToken(INL_T, lookahead.attribute.intValue);
+			matchToken(INL_T, NO_ATTR);
 			if (lookahead.code == ARG_SEP_T) {
 				matchToken(ARG_SEP_T, NO_ATTR);
 				integerVariableList();
+			}
+			else {
+				matchToken(EOS_T, NO_ATTR);
 			}
 			break;
 		default:
@@ -454,7 +415,7 @@ rid_void integerVariable() {
 		integerVariableList();
 		break;
 	case INL_T:
-		matchToken(INL_T, lookahead.attribute.intValue);
+		matchToken(INL_T, NO_ATTR);
 		break;
 	case EOS_T:
 		matchToken(EOS_T, NO_ATTR);
@@ -499,10 +460,6 @@ rid_void floatVariableList() {
 		matchToken(VAR_T, NO_ATTR);
 		floatVariable();
 		break;
-	case ARG_SEP_T:
-		matchToken(ARG_SEP_T, NO_ATTR);
-		floatVariableList();
-		break;
 	default:
 		printError();
 		printf("variable expected here");
@@ -522,9 +479,13 @@ rid_void floatVariable() {
 		matchToken(ASSIGN_T, NO_ATTR);
 		switch (lookahead.code) {
 		case FLT_PT_T:
-			matchToken(FLT_PT_T, lookahead.attribute.floatValue);
+			matchToken(FLT_PT_T, NO_ATTR);
 			if (lookahead.code == ARG_SEP_T) {
+				matchToken(ARG_SEP_T, NO_ATTR);
 				floatVariableList();
+			}
+			else {
+				matchToken(EOS_T, NO_ATTR);
 			}
 			break;
 		default:
@@ -533,17 +494,18 @@ rid_void floatVariable() {
 		}
 		break;
 	case ARG_SEP_T:
+		matchToken(ARG_SEP_T, NO_ATTR);
 		floatVariableList();
 		break;
 	case FLT_PT_T:
-		matchToken(FLT_PT_T, lookahead.attribute.floatValue);
+		matchToken(FLT_PT_T, KW_float);
 		break;
 	case EOS_T:
 		matchToken(EOS_T, NO_ATTR);
 		break;
 	default:
 		printError();
-		printf("float variable expected here");
+		printf("float variable expected here\n");
 	}
 	printf("%s%s\n", STR_LANGNAME, ": float variable parsed");
 }
@@ -582,10 +544,6 @@ rid_void stringVariableList() {
 		matchToken(VAR_T, NO_ATTR);
 		stringVariable();
 		break;
-	case ARG_SEP_T:
-		matchToken(ARG_SEP_T, NO_ATTR);
-		stringVariableList();
-		break;
 	default:
 		printError();
 		printf("variable expected here");
@@ -607,7 +565,11 @@ rid_void stringVariable() {
 		case STR_T:
 			matchToken(STR_T, lookahead.attribute.contentString);
 			if (lookahead.code == ARG_SEP_T) {
+				matchToken(ARG_SEP_T, NO_ATTR);
 				stringVariableList();
+			}
+			else {
+				matchToken(EOS_T, NO_ATTR);
 			}
 			break;
 		default:
@@ -616,6 +578,7 @@ rid_void stringVariable() {
 		}
 		break;
 	case ARG_SEP_T:
+		matchToken(ARG_SEP_T, NO_ATTR);
 		stringVariableList();
 		break;
 	case EOS_T:
@@ -841,12 +804,12 @@ rid_void outputStatement() {
 /*
  ************************************************************
  * Output Variable List
- * BNF: <output_variable_list> -> <parameter_list> | <output_variable_list> <parameter_list> | ϵ
+ * BNF: <output_variable_list> -> <arguments_list> | <output_variable_list> <arguments_list> | ϵ
  * FIRST(<opt_variable_list>) = { INL_T, FLT_PT_T, STR_T, ϵ }
  ***********************************************************
  */
 rid_void outputVariableList() {
-	parameterList();
+	argumentsList();
 	switch (lookahead.code) {
 	case ARG_SEP_T:
 		matchToken(ARG_SEP_T, NO_ATTR);
@@ -887,12 +850,12 @@ rid_void inputStatement() {
 /*
  ************************************************************
  * Intput Variable List
- * BNF: <input_variable_list> -> <parameter_list> | <parameter_list> <input_variable_list> | ϵ
+ * BNF: <input_variable_list> -> <arguments_list> | <arguments_list> <input_variable_list> | ϵ
  * FIRST(<inputVariableList>) = { INL_T, FLT_PT_T, STR_T, ϵ }
  ***********************************************************
  */
 rid_void inputVariableList() {
-	parameterList();
+	argumentsList();
 	switch (lookahead.code) {
 	case ARG_SEP_T:
 		matchToken(ARG_SEP_T, NO_ATTR);
@@ -906,12 +869,12 @@ rid_void inputVariableList() {
 
 /*
  ************************************************************
- * Parameter List
- * BNF: <parameter_list> -> INL_T | FLT_PT_T | STR_T | ϵ
+ * arguments List
+ * BNF: <arguments_list> -> INL_T | FLT_PT_T | STR_T | ϵ
  * FIRST(<variableList>) = { INL_T, FLT_PT_T, STR_T, ϵ }
  ***********************************************************
  */
-rid_void parameterList() {
+rid_void argumentsList() {
 	switch (lookahead.code) {
 	case STR_T:
 		stringVariable();
@@ -928,7 +891,7 @@ rid_void parameterList() {
 	default:
 		;
 	}
-	printf("%s%s\n", STR_LANGNAME, ": parameter parsed");
+	printf("%s%s\n", STR_LANGNAME, ": argument parsed");
 }
 
 /*
