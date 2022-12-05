@@ -7,3 +7,14 @@
 0	275	6917009306295782	CMakeFiles/RidCompiler.dir/Reader.c.obj	e87ca2e2114e9185
 22	276	6917009306295782	CMakeFiles/RidCompiler.dir/Parser.c.obj	54053fc07b53fd4f
 276	508	6917009308653514	RidCompiler.exe	298bcad8c05e33dd
+0	330	6918968958311525	CMakeFiles/RidCompiler.dir/Parser.c.obj	54053fc07b53fd4f
+331	466	6918968959323934	RidCompiler.exe	298bcad8c05e33dd
+0	9	0	clean	8c45b54705a541e8
+0	376	6919012284396178	CMakeFiles/RidCompiler.dir/Reader.c.obj	e87ca2e2114e9185
+3	378	6919012284419122	CMakeFiles/RidCompiler.dir/Compilers.c.obj	4880ae5f6c1d7a93
+6	385	6919012284474935	CMakeFiles/RidCompiler.dir/MainScanner.c.obj	f322a34328bb45c1
+14	387	6919012284474935	CMakeFiles/RidCompiler.dir/MainParser.c.obj	29797d330a19e6af
+24	390	6919012284560019	CMakeFiles/RidCompiler.dir/Parser.c.obj	54053fc07b53fd4f
+9	390	6919012284548342	CMakeFiles/RidCompiler.dir/MainReader.c.obj	f738e3954ebc9222
+19	393	6919012284600679	CMakeFiles/RidCompiler.dir/Scanner.c.obj	bfc4451073f6cdf4
+393	539	6919012285782038	RidCompiler.exe	298bcad8c05e33dd
